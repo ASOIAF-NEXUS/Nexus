@@ -1,10 +1,10 @@
-package asoiaf.listbuilder;
+package asoiafnexus.listbuilder;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static asoiaf.listbuilder.Units.Faction.LANNISTER;
+import static asoiafnexus.listbuilder.Units.Faction.LANNISTER;
 
 /**
  * Functions and capabilities for interacting with unit data.
