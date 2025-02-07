@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     id 'application'
     id 'java'
@@ -9,34 +11,73 @@ plugins {
 group = 'asoiaf-nexus'
 version = '0.1-SNAPSHOT'
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
+repositories {
+    mavenCentral()
 }
 
 jar {
     enabled = false
 }
 
-application {
-    mainClass = 'asoiafnexus.Main'
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
-repositories {
-    mavenCentral()
+
+allprojects {
+    apply plugin: "java"
+
+    repositories {
+        mavenCentral()
+    }
+
+    compileJava {
+        options.compilerArgs += [
+                "-parameters",
+        ]
+        options.encoding = 'UTF-8'
+    }
+
+    compileTestJava {
+        options.compilerArgs += [
+                "-parameters",
+        ]
+        options.encoding = 'UTF-8'
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+        testAnnotationProcessor {
+            extendsFrom annotationProcessor
+        }
+        testCompileOnly {
+            extendsFrom testAnnotationProcessor
+        }
+    }
+
+    dependencies {
+        implementation(enforcedPlatform(SpringBootPlugin.BOM_COORDINATES))
+        annotationProcessor(platform(SpringBootPlugin.BOM_COORDINATES))
+        annotationProcessor("org.projectlombok:lombok")
+
+        // Testing
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation platform('org.junit:junit-bom:5.10.0')
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
 }
 
 dependencies {
-    implementation platform('org.springframework.boot:spring-boot-dependencies:3.4.2')
     implementation 'org.springframework.boot:spring-boot-starter-web'
-
-    // Testing
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-}
-
-test {
-    useJUnitPlatform()
+    implementation(project(":user"))
+    implementation(project(":listbuilder"))
 }

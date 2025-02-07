@@ -1,4 +1,4 @@
-package asoiafnexus;
+package asoiafnexus.listbuilder.controller;
 
 import asoiafnexus.listbuilder.Units;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,10 +9,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
-public class Routes {
+public class UnitsController {
 
     @GetMapping("/units")
-    List<Units.Unit> allUnits() {
+    List<Units.Unit> getAllUnits() {
         return Units.allUnits();
     }
 }
