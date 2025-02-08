@@ -11,6 +11,10 @@ plugins {
 group = 'asoiaf-nexus'
 version = '0.1-SNAPSHOT'
 
+application {
+    mainClass = 'asoiafnexus.Main'
+}
+
 repositories {
     mavenCentral()
 }
@@ -20,12 +24,11 @@ jar {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_23
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(23)
     }
 }
-
 
 allprojects {
     apply plugin: "java"
