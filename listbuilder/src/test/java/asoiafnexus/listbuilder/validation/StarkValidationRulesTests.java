@@ -23,7 +23,7 @@ public class StarkValidationRulesTests {
     AtomicEntry rickon = new AtomicEntry("Rickon Stark", "Prince Of Winterfell", 1);
     AtomicEntry osha = new AtomicEntry("Osha", "Spearwife Guardian", 0);
 
-    ValidationRule rule = new StarkFactionValidation().STARK_FACTION_VALIDATION;
+    ValidationRule rule = new StarkFactionValidation().STARK_VALIDATORS;
 
     @Test
     public void noErrorsWhenNothingToValidate() {

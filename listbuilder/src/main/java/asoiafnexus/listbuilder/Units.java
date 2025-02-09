@@ -1,92 +1,118 @@
 package asoiafnexus.listbuilder;
 
+import javax.swing.text.html.Option;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
-import static asoiafnexus.listbuilder.Units.Faction.LANNISTER;
+import static asoiafnexus.listbuilder.Units.Faction.*;
+import static asoiafnexus.listbuilder.Units.ListBuildingAbilities.*;
+import static asoiafnexus.listbuilder.Units.UnitType.*;
 
 /**
  * Functions and capabilities for interacting with unit data.
  */
 public class Units {
-    public enum Faction {LANNISTER}
-    public enum UnitType {COMBAT_UNIT, NCU, ATTACHMENT}
-    public enum ListBuildingAbilities {ADAPTIVE, KINGSGUARD}
+    public enum Faction {LANNISTER, STARKS}
 
-    public record Unit (
+    public enum BattlefieldRole {UNIT, ATTACHMENT, ENEMY_ATTACHMENT}
+    public enum UnitType {INFANTRY, CAVALRY, MONSTER, WAR_MACHINE, NCU}
+
+    public enum ListBuildingAbilities {ADAPTIVE, CHARACTER, COMMANDER, SOLO}
+
+    public record Unit(
             Faction faction,
             String name,
             String title,
+            String id,
             UnitType type,
             int points,
             List<ListBuildingAbilities> buildingAbilities
-    ) {}
+    ) {
+    }
 
     static class UnitBuilder {
         Faction faction;
+        BattlefieldRole battlefieldRole;
         UnitType unitType;
         LinkedList<Unit> units;
 
         UnitBuilder() {
             faction = null;
+            battlefieldRole = null;
             unitType = null;
             units = new LinkedList<>();
         }
 
-        UnitBuilder forFaction(Faction f) { this.faction = f; return this; }
-        UnitBuilder forUnits(UnitType u) { this.unitType = u; return this; }
-        UnitBuilder define(String name, int points) { return define(name, null, points, Collections.emptyList()); }
-        UnitBuilder define(String name, String title, int points) { return define(name, title, points, Collections.emptyList()); }
+        UnitBuilder forFaction(Faction f) {
+            this.faction = f;
+            return this;
+        }
+
+        UnitBuilder forBattlefieldRole(BattlefieldRole r) {
+            this.battlefieldRole = r;
+            return this;
+        }
+
+        UnitBuilder forUnits(UnitType u) {
+            this.unitType = u;
+            return this;
+        }
+
+        UnitBuilder define(String name, int points) {
+            return define(name, null, points, Collections.emptyList());
+        }
+
+        UnitBuilder define(String name, String title, int points) {
+            return define(name, title, points, Collections.emptyList());
+        }
+
         UnitBuilder define(String name, String title, int points, List<ListBuildingAbilities> buildingAbilities) {
-            units.add(new Unit(this.faction, name, title, this.unitType, points, buildingAbilities));
+            units.add(new Unit(this.faction, name, title, makeId(name, title), this.unitType, points, buildingAbilities));
             return this;
         }
 
         List<Unit> build() {
             return units;
         }
+
+        private String makeId(String name, String title) {
+            var combined = Optional.ofNullable(name).orElse("") +
+                    Optional.ofNullable(title).orElse("");
+            return combined.toLowerCase().replaceAll("\\w", "");
+        }
     }
 
     public static List<Unit> allUnits() {
-        return new Units.UnitBuilder()
-                .forFaction(LANNISTER)
-                .forUnits(UnitType.COMBAT_UNIT)
-                .define("Gregor Clegane", "The Mountain That Rides", 4)
-                .define("Poor Fellows", 4)
-                .define("Lannister Guardsmen", 4)
-                .define("Lannister Halberdiers", 5)
-                .define("Gold Cloaks", 5)
-                .define("House Clegane Mountain's Men", 6)
-                .define("Lannister Crossbowmen", 6)
-                .define("Red Cloaks", 6)
-                .define("Lannisport City Watch", 6)
-                .define("House Clegane Brigands", 6)
-                .define("Pyromancers", 7)
-                .define("The Warrior's Sons", 7)
-                .define("Casterly Rock Honor Guard", 7)
-                .define("Knights Of Casterly Rock", 8)
+        return new UnitBuilder()
+                .forFaction(STARKS)
+                .forBattlefieldRole(BattlefieldRole.UNIT)
+                .forUnits(CAVALRY)
+                .define("House Tully Cavaliers", 8)
+                .define("House Umber Ravagers", 7)
+                .define("Stark Outriders", 6)
 
-                .forUnits(UnitType.ATTACHMENT)
-                .define("Clegane Butcher", 1)
-                .define("Gregor Clegane", "Mounted Behemoth", 3)
-                .define("Tyrion Lannister", "The Giant Of Lannister", 1)
-                .define("Sandor Clegane", "The Hound", 1)
-                .define("Preston Greenfield", "Kingsguard", 1, List.of(ListBuildingAbilities.KINGSGUARD))
-                .define("Meryn Trant", "Kingsguard",1, List.of(ListBuildingAbilities.KINGSGUARD))
-                .define("Arys Oakheart", "Kingsguard",1, List.of(ListBuildingAbilities.KINGSGUARD))
-                .define("Mandon Moore", "Kingsguard",1, List.of(ListBuildingAbilities.KINGSGUARD))
-                .define("Boros Blount", "Kingsguard",1, List.of(ListBuildingAbilities.KINGSGUARD))
-                .define("Qyburn", "Forbidden Knowledge", 1)
-                .define("Champion of the Faith", 1)
-                .define("Guard Captain", 1)
-                .define("Assault Veteran", 1)
-                .define("Sentinel Enforcer", 1)
-                .define("Jaime Lannister", "Kingsguard",1, List.of(ListBuildingAbilities.KINGSGUARD))
-                .define("Jamie Lannister", "The Young Lion", 2)
-                .define("Barristan Selmy", "Lord Commander Of The Kingsguard", 2, List.of(ListBuildingAbilities.KINGSGUARD))
-                .define("Gregor Clegane", "Lord Tywin's Mad Dog", 2)
-                .define("Addam Marbrand", "Trusted Bannerman", 2)
+                .forUnits(INFANTRY)
+                .define("Crannogman Bog Devils", 7)
+                .define("Crannogman Trackers", 5)
+                .define("Eddardd's Honor Guard", null, 6, List.of(CHARACTER))
+                .define("House Karstark Loyalists", 5)
+                .define("House Karstark Spearmen", 5)
+                .define("House Mormont Bruisers", 6)
+                .define("House Mormont She-Bears", 6)
+                .define("House Tully Sworn Shield", 6)
+                .define("House Umber Berserkers", 6)
+                .define("House Umber Greataxes", 7)
+                .define("Stark Bowmen", 6)
+                .define("Stark Sworn Swords", 5)
+                .define("Winterfell Guard", null, 7, List.of(ADAPTIVE))
+
+                .forUnits(MONSTER)
+                .define("Grey Wind", null, 3, List.of(CHARACTER, SOLO))
+                .define("Shaggydog", null, 3, List.of(CHARACTER, SOLO))
+                .define("Summer", null, 3, List.of(CHARACTER, SOLO))
+
                 .build();
     }
 }
