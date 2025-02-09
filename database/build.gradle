@@ -9,4 +9,7 @@ dependencies {
     implementation "org.jdbi:jdbi3-json"
     implementation "org.jdbi:jdbi3-sqlobject"
     implementation "javax.annotation:javax.annotation-api:1.3.2"
+
+    runtimeOnly "org.postgresql:postgresql"
+    runtimeOnly "org.jdbi:jdbi3-postgres"
 }

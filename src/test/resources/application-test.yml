@@ -1,5 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql:///postgres
-    username: postgres
-    password: postgres
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
