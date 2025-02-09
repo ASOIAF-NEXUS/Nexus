@@ -4,5 +4,6 @@ plugins {
 
 rootProject.name = 'asoiaf-nexus'
 
-include("user",
+include("database",
+        "user",
         "listbuilder")

@@ -62,6 +62,7 @@ allprojects {
 
     dependencies {
         implementation(enforcedPlatform(SpringBootPlugin.BOM_COORDINATES))
+        implementation(platform("org.jdbi:jdbi3-bom:3.47.0"))
         annotationProcessor(platform(SpringBootPlugin.BOM_COORDINATES))
         annotationProcessor("org.projectlombok:lombok")
 
