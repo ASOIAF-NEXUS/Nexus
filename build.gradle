@@ -79,6 +79,12 @@ allprojects {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    runtimeOnly "org.postgresql:postgresql"
+    runtimeOnly "org.jdbi:jdbi3-postgres"
+
+    //Added modules
     implementation(project(":user"))
     implementation(project(":listbuilder"))
+    implementation(project(":database"))
 }

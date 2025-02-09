@@ -4,11 +4,9 @@ plugins {
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-autoconfigure"
-    runtimeOnly "org.postgresql:postgresql"
-    runtimeOnly "org.jdbi:jdbi3-postgres"
     implementation "org.jdbi:jdbi3-spring"
     implementation "org.jdbi:jdbi3-jackson2"
     implementation "org.jdbi:jdbi3-json"
     implementation "org.jdbi:jdbi3-sqlobject"
-    implementation("org.springframework:spring-context")
+    implementation "javax.annotation:javax.annotation-api:1.3.2"
 }
