@@ -62,6 +62,7 @@ allprojects {
 
     dependencies {
         implementation(enforcedPlatform(SpringBootPlugin.BOM_COORDINATES))
+        implementation(platform("org.jdbi:jdbi3-bom:3.47.0"))
         annotationProcessor(platform(SpringBootPlugin.BOM_COORDINATES))
         annotationProcessor("org.projectlombok:lombok")
 
@@ -77,7 +78,15 @@ allprojects {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    runtimeOnly 'org.springframework.boot:spring-boot-starter-web'
+    runtimeOnly 'org.springframework.boot:spring-boot-starter-actuator'
+
+    //Added modules
     implementation(project(":user"))
     implementation(project(":listbuilder"))
+    implementation(project(":database"))
+
+    //Test dependency
+    testImplementation "com.h2database:h2"
 }
