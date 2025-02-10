@@ -140,11 +140,6 @@
     "points": 7,
     "attributes": [
       "adaptive"
-    ],
-    "requires": [
-      {
-        "name": "Bran Stark"
-      }
     ]
   },
   {
@@ -191,6 +186,11 @@
     "attributes": [
       "character",
       "solo"
+    ],
+    "requires": [
+      {
+        "name": "Bran Stark"
+      }
     ]
   },
   {
