@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface ListEntry {
     // maybe not needed anymore?
-    List<AtomicEntry> allEntries();
+    List<Unit> allEntries();
 }

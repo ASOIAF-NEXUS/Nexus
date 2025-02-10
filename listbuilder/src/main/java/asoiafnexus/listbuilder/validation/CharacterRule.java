@@ -1,7 +1,7 @@
 package asoiafnexus.listbuilder.validation;
 
-import asoiafnexus.listbuilder.model.AtomicEntry;
 import asoiafnexus.listbuilder.model.ListEntry;
+import asoiafnexus.listbuilder.model.Unit;
 
 import java.util.List;
 import java.util.Set;
@@ -20,7 +20,7 @@ implements ValidationRule {
     public List<String> validationMessages(List<ListEntry> armyList) {
         var groupedCharacters = armyList.stream()
                 .flatMap(e -> e.allEntries().stream())
-                .map(AtomicEntry::name)
+                .map(Unit::name)
                 .filter(characters::contains)
                 .collect(Collectors.groupingBy(Function.identity()));
 

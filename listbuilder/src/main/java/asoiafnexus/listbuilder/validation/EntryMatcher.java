@@ -1,6 +1,6 @@
 package asoiafnexus.listbuilder.validation;
 
-import asoiafnexus.listbuilder.model.AtomicEntry;
+import asoiafnexus.listbuilder.model.Unit;
 
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -18,7 +18,7 @@ public record EntryMatcher(
 ) {
     public EntryMatcher(String name) { this(name, null); }
 
-    public boolean match(AtomicEntry entry) {
+    public boolean match(Unit entry) {
         var isMatch = true;
         if(nonNull(name) && nonNull(entry.name())) isMatch &= Pattern.matches(name, entry.name());
         if(nonNull(title) && nonNull(entry.title())) isMatch &= Pattern.matches(title, entry.title());

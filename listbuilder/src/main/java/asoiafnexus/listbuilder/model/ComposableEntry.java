@@ -4,20 +4,20 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public record ComposableEntry(
-        AtomicEntry unit,
-        List<AtomicEntry> attachments
+        Unit unit,
+        List<Unit> attachments
 ) implements ListEntry {
 
     @Override
-    public List<AtomicEntry> allEntries() {
-        return Stream.concat(Stream.of(unit), attachments.stream())
-                .flatMap(e -> e.allEntries().stream())
+    public List<Unit> allEntries() {
+        return Stream
+                .concat(Stream.of(unit), attachments.stream())
                 .toList();
     }
 
     public int points() {
         return attachments.stream()
-                .map(AtomicEntry::points)
+                .map(Unit::points)
                 .reduce(unit.points(), Integer::sum);
     }
 }

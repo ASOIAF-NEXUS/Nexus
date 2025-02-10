@@ -1,0 +1,670 @@
+[
+  {
+    "faction": "starks",
+    "name": "House Tully Cavaliers",
+    "id": "housetullycavaliers",
+    "role": "combat_unit",
+    "type": "cavalry",
+    "points": 8
+  },
+  {
+    "faction": "starks",
+    "name": "House Umber Ravagers",
+    "id": "houseumberravagers",
+    "role": "combat_unit",
+    "type": "cavalry",
+    "points": 7
+  },
+  {
+    "faction": "starks",
+    "name": "Stark Outriders",
+    "id": "starkoutriders",
+    "role": "combat_unit",
+    "type": "cavalry",
+    "points": 6
+  },
+  {
+    "faction": "starks",
+    "name": "Crannogman Bog Devils",
+    "id": "crannogmanbogdevils",
+    "role": "combat_unit",
+    "type": "infantry",
+    "points": 7
+  },
+  {
+    "faction": "starks",
+    "name": "Crannogman Trackers",
+    "id": "crannogmantrackers",
+    "role": "combat_unit",
+    "type": "infantry",
+    "points": 5
+  },
+  {
+    "faction": "starks",
+    "name": "Eddardd's Honor Guard",
+    "id": "eddarddshonorguard",
+    "role": "combat_unit",
+    "type": "infantry",
+    "points": 6,
+    "attributes": [
+      "character"
+    ],
+    "requires": [
+      {
+        "name": "Eddard Stark",
+        "title": "Lord of Winterfell",
+        "attributes": [
+          "same_combat_unit"
+        ]
+      }
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "House Karstark Loyalists",
+    "id": "housekarstarkloyalists",
+    "role": "combat_unit",
+    "type": "infantry",
+    "points": 5
+  },
+  {
+    "faction": "starks",
+    "name": "House Karstark Spearmen",
+    "id": "housekarstarkspearmen",
+    "role": "combat_unit",
+    "type": "infantry",
+    "points": 5
+  },
+  {
+    "faction": "starks",
+    "name": "House Mormont Bruisers",
+    "id": "housemormontbruisers",
+    "role": "combat_unit",
+    "type": "infantry",
+    "points": 6
+  },
+  {
+    "faction": "starks",
+    "name": "House Mormont She-Bears",
+    "id": "housemormontshebears",
+    "role": "combat_unit",
+    "type": "infantry",
+    "points": 6
+  },
+  {
+    "faction": "starks",
+    "name": "House Tully Sworn Shield",
+    "id": "housetullyswornshield",
+    "role": "combat_unit",
+    "type": "infantry",
+    "points": 6
+  },
+  {
+    "faction": "starks",
+    "name": "House Umber Berserkers",
+    "id": "houseumberberserkers",
+    "role": "combat_unit",
+    "type": "infantry",
+    "points": 6
+  },
+  {
+    "faction": "starks",
+    "name": "House Umber Greataxes",
+    "id": "houseumbergreataxes",
+    "role": "combat_unit",
+    "type": "infantry",
+    "points": 7
+  },
+  {
+    "faction": "starks",
+    "name": "Stark Bowmen",
+    "id": "starkbowmen",
+    "role": "combat_unit",
+    "type": "infantry",
+    "points": 6
+  },
+  {
+    "faction": "starks",
+    "name": "Stark Sworn Swords",
+    "id": "starkswornswords",
+    "role": "combat_unit",
+    "type": "infantry",
+    "points": 5
+  },
+  {
+    "faction": "starks",
+    "name": "Winterfell Guard",
+    "id": "winterfellguard",
+    "role": "combat_unit",
+    "type": "infantry",
+    "points": 7,
+    "attributes": [
+      "adaptive"
+    ],
+    "requires": [
+      {
+        "name": "Bran Stark"
+      }
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Grey Wind",
+    "id": "greywind",
+    "role": "combat_unit",
+    "type": "monster",
+    "points": 3,
+    "attributes": [
+      "character",
+      "solo"
+    ],
+    "requires": [
+      {
+        "name": "Robb Stark"
+      }
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Shaggydog",
+    "id": "shaggydog",
+    "role": "combat_unit",
+    "type": "monster",
+    "points": 3,
+    "attributes": [
+      "character",
+      "solo"
+    ],
+    "requires": [
+      {
+        "name": "Rickon Stark"
+      }
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Summer",
+    "id": "summer",
+    "role": "combat_unit",
+    "type": "monster",
+    "points": 3,
+    "attributes": [
+      "character",
+      "solo"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Eddard Stark",
+    "title": "Warden of the North",
+    "id": "eddardstarkwardenofthenorth",
+    "role": "ncu",
+    "type": "ncu",
+    "points": 6,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Rodrik Cassel",
+    "title": "Combat Veteran",
+    "id": "rodrikcasselcombatveteran",
+    "role": "ncu",
+    "type": "ncu",
+    "points": 4,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Howland Reed",
+    "title": "Protector of the Neck",
+    "id": "howlandreedprotectoroftheneck",
+    "role": "ncu",
+    "type": "ncu",
+    "points": 4,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Arya Stark",
+    "title": "The Wolf Girl",
+    "id": "aryastarkthewolfgirl",
+    "role": "ncu",
+    "type": "ncu",
+    "points": 4,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Eddard Stark",
+    "title": "Hand of the King",
+    "id": "eddardstarkhandoftheking",
+    "role": "ncu",
+    "type": "ncu",
+    "points": 5,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Lyanna Mormont",
+    "title": "Youngest She-Bear",
+    "id": "lyannamormontyoungestshebear",
+    "role": "ncu",
+    "type": "ncu",
+    "points": 4,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Robb Stark",
+    "title": "King in the North",
+    "id": "robbstarkkinginthenorth",
+    "role": "ncu",
+    "type": "ncu",
+    "points": 4,
+    "attributes": [
+      "character"
+    ],
+    "excludes": [
+      {
+        "name": "Eddard Stark"
+      }
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Catelyn Stark",
+    "title": "Lady of Winterfell",
+    "id": "catelynstarkladyofwinterfell",
+    "role": "ncu",
+    "type": "ncu",
+    "points": 4,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Sansa Stark",
+    "title": "Little Bird",
+    "id": "sansastarklittlebird",
+    "role": "ncu",
+    "type": "ncu",
+    "points": 4,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Bran And Hodor",
+    "includes": "Bran Stark",
+    "title": "Protector and Ward",
+    "id": "branandhodorprotectorandward",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 4,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Brynden Tully",
+    "title": "Outrider commander",
+    "id": "byrndentullyoutridercommander",
+    "role": "attachment",
+    "type": "cavalry",
+    "points": 0,
+    "attributes": [
+      "character",
+      "commander"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Brynden Tully",
+    "title": "The Blackfish",
+    "id": "byrndentullytheblackfish",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 0,
+    "attributes": [
+      "character",
+      "commander"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Brynden Tully",
+    "title": "Unyielding Knight",
+    "id": "byrndentullyunyieldingknight",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 2,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Brynden Tully",
+    "title": "Vanguard Infiltrator",
+    "id": "byrndentullyvangyardinfiltrator",
+    "role": "attachment",
+    "type": "cavalry",
+    "points": 2,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Crannogman Survivalist",
+    "id": "crannogmansurvivalist",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 1
+  },
+  {
+    "faction": "starks",
+    "name": "Crannogman Warden",
+    "id": "crannogmanwarden",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 1
+  },
+  {
+    "faction": "starks",
+    "name": "Eddard Stark",
+    "title": "Lord of Winterfell",
+    "id": "eddardstarklordofwinterfell",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 2,
+    "attributes": [
+      "character",
+      "commander"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Greatjon Umber",
+    "title": "Fierce Bannerman",
+    "id": "greatjonumberfiercebannerman",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 2,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Greatjon Umber",
+    "title": "Lord of Last Hearth",
+    "id": "greatjonumberlordoflasthearth",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 0,
+    "attributes": [
+      "character",
+      "commander"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Howland Reed",
+    "title": "Lord of the Crannogs",
+    "id": "howlandreedlordofthecrannogs",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 0,
+    "attributes": [
+      "character",
+      "commander"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Jaqen H'Ghar",
+    "title": "Mysterious Prisoner",
+    "id": "jaqenhgharmysteriousprisoner",
+    "role": "enemy_attachment",
+    "type": "infantry",
+    "points": 1,
+    "attributes": [
+      "character"
+    ],
+    "requires": [
+      {
+        "name": "Arya Stark"
+      }
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Jojen Reed",
+    "title": "Greensight",
+    "id": "jojenreedgreensight",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 2,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Loyalist Captain",
+    "id": "loyalistcaptain",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 1
+  },
+  {
+    "faction": "starks",
+    "name": "Maege Mormont",
+    "title": "Lady of Bear Island",
+    "id": "maegemormontladyofbearisland",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 0,
+    "attributes": [
+      "character",
+      "commander"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Maege Mormont",
+    "title": "The She-Bear",
+    "id": "maegemormonttheshebear",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 2,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Meera Reed",
+    "title": "Cunning Trapper",
+    "id": "meerareedcunningtrapper",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 1,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Mormont Veteran",
+    "id": "mormontveteran",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 1
+  },
+  {
+    "faction": "starks",
+    "name": "Osha",
+    "title": "Spearwife Guardian",
+    "id": "oshaspearwifeguardian",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 0,
+    "attributes": [
+      "character"
+    ],
+    "requires": [
+      {
+        "name": "Rickon Stark",
+        "attributes": [
+          "same_combat_unit",
+          "ignores_attachment_limits"
+        ]
+      }
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Rickard Karstark",
+    "title": "Lord of Karhold",
+    "id": "rickardkarstarklordofkarhold",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 0,
+    "attributes": [
+      "character",
+      "commander"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Rickard Karstark",
+    "title": "Vengeful Bannerman",
+    "id": "rickardkarstarkvengefulbannerman",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 2,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Rickon Stark",
+    "title": "Prince of Winterfell",
+    "id": "rickonstarkprinceofwinterfell",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 1,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Robb Stark",
+    "title": "The Wolf Lord",
+    "id": "robbstarkthewolflord",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 0,
+    "attributes": [
+      "character",
+      "commander"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Robb Stark",
+    "title": "The Young Wolf",
+    "id": "robbstarktheyoungwolf",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 2,
+    "attributes": [
+      "character"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Rodrik Cassel",
+    "title": "Master-At-Arms",
+    "id": "rodrikcasselmasteratarms",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 0,
+    "attributes": [
+      "character",
+      "commander"
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Sworn Sword Captain",
+    "id": "swornswordcaptain",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 1
+  },
+  {
+    "faction": "starks",
+    "name": "Syrio Forell",
+    "title": "First Blade of Braavos",
+    "id": "syrioforellfirstbladeofbraavos",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 2,
+    "attributes": [
+      "character"
+    ],
+    "requires": [
+      {
+        "name": "Arya Stark",
+        "title": "The Wolf Girl"
+      },
+      {
+        "name": "Eddard Stark"
+      }
+    ]
+  },
+  {
+    "faction": "starks",
+    "name": "Umber Champion",
+    "id": "umberchampion",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 1
+  },
+  {
+    "faction": "starks",
+    "name": "Winterfell Guardian",
+    "id": "winterfellguardian",
+    "role": "attachment",
+    "type": "cavalry",
+    "points": 1
+  },
+  {
+    "faction": "starks",
+    "name": "Winterfell Champion",
+    "id": "winterfellchampion",
+    "role": "attachment",
+    "type": "infantry",
+    "points": 1
+  }
+]

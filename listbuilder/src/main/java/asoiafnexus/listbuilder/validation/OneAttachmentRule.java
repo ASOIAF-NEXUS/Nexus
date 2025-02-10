@@ -1,8 +1,8 @@
 package asoiafnexus.listbuilder.validation;
 
-import asoiafnexus.listbuilder.model.AtomicEntry;
 import asoiafnexus.listbuilder.model.ComposableEntry;
 import asoiafnexus.listbuilder.model.ListEntry;
+import asoiafnexus.listbuilder.model.Unit;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +32,7 @@ implements ValidationRule {
         return Collections.emptyList();
     }
 
-    public List<AtomicEntry> filterIgnoresAttachmentLimits(List<AtomicEntry> attachments) {
+    public List<Unit> filterIgnoresAttachmentLimits(List<Unit> attachments) {
         return attachments.stream()
                 .filter(e -> ignoresAttachmentLimits.stream().noneMatch(m -> m.match(e)))
                 .toList();
