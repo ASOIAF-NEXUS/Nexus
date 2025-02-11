@@ -1,6 +1,6 @@
 [
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "House Tully Cavaliers",
     "id": "housetullycavaliers",
     "role": "combat_unit",
@@ -8,7 +8,7 @@
     "points": 8
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "House Umber Ravagers",
     "id": "houseumberravagers",
     "role": "combat_unit",
@@ -16,7 +16,7 @@
     "points": 7
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Stark Outriders",
     "id": "starkoutriders",
     "role": "combat_unit",
@@ -24,7 +24,7 @@
     "points": 6
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Crannogman Bog Devils",
     "id": "crannogmanbogdevils",
     "role": "combat_unit",
@@ -32,7 +32,7 @@
     "points": 7
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Crannogman Trackers",
     "id": "crannogmantrackers",
     "role": "combat_unit",
@@ -40,7 +40,7 @@
     "points": 5
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Eddardd's Honor Guard",
     "id": "eddarddshonorguard",
     "role": "combat_unit",
@@ -60,7 +60,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "House Karstark Loyalists",
     "id": "housekarstarkloyalists",
     "role": "combat_unit",
@@ -68,7 +68,7 @@
     "points": 5
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "House Karstark Spearmen",
     "id": "housekarstarkspearmen",
     "role": "combat_unit",
@@ -76,7 +76,7 @@
     "points": 5
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "House Mormont Bruisers",
     "id": "housemormontbruisers",
     "role": "combat_unit",
@@ -84,7 +84,7 @@
     "points": 6
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "House Mormont She-Bears",
     "id": "housemormontshebears",
     "role": "combat_unit",
@@ -92,7 +92,7 @@
     "points": 6
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "House Tully Sworn Shield",
     "id": "housetullyswornshield",
     "role": "combat_unit",
@@ -100,7 +100,7 @@
     "points": 6
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "House Umber Berserkers",
     "id": "houseumberberserkers",
     "role": "combat_unit",
@@ -108,7 +108,7 @@
     "points": 6
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "House Umber Greataxes",
     "id": "houseumbergreataxes",
     "role": "combat_unit",
@@ -116,7 +116,7 @@
     "points": 7
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Stark Bowmen",
     "id": "starkbowmen",
     "role": "combat_unit",
@@ -124,7 +124,7 @@
     "points": 6
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Stark Sworn Swords",
     "id": "starkswornswords",
     "role": "combat_unit",
@@ -132,7 +132,7 @@
     "points": 5
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Winterfell Guard",
     "id": "winterfellguard",
     "role": "combat_unit",
@@ -143,7 +143,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Grey Wind",
     "id": "greywind",
     "role": "combat_unit",
@@ -160,7 +160,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Shaggydog",
     "id": "shaggydog",
     "role": "combat_unit",
@@ -177,7 +177,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Summer",
     "id": "summer",
     "role": "combat_unit",
@@ -194,7 +194,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Eddard Stark",
     "title": "Warden of the North",
     "id": "eddardstarkwardenofthenorth",
@@ -206,7 +206,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Rodrik Cassel",
     "title": "Combat Veteran",
     "id": "rodrikcasselcombatveteran",
@@ -218,7 +218,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Howland Reed",
     "title": "Protector of the Neck",
     "id": "howlandreedprotectoroftheneck",
@@ -230,7 +230,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Arya Stark",
     "title": "The Wolf Girl",
     "id": "aryastarkthewolfgirl",
@@ -242,7 +242,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Eddard Stark",
     "title": "Hand of the King",
     "id": "eddardstarkhandoftheking",
@@ -254,7 +254,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Lyanna Mormont",
     "title": "Youngest She-Bear",
     "id": "lyannamormontyoungestshebear",
@@ -266,7 +266,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Robb Stark",
     "title": "King in the North",
     "id": "robbstarkkinginthenorth",
@@ -283,7 +283,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Catelyn Stark",
     "title": "Lady of Winterfell",
     "id": "catelynstarkladyofwinterfell",
@@ -295,7 +295,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Sansa Stark",
     "title": "Little Bird",
     "id": "sansastarklittlebird",
@@ -307,7 +307,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Bran And Hodor",
     "includes": "Bran Stark",
     "title": "Protector and Ward",
@@ -320,7 +320,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Brynden Tully",
     "title": "Outrider commander",
     "id": "byrndentullyoutridercommander",
@@ -333,7 +333,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Brynden Tully",
     "title": "The Blackfish",
     "id": "byrndentullytheblackfish",
@@ -346,7 +346,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Brynden Tully",
     "title": "Unyielding Knight",
     "id": "byrndentullyunyieldingknight",
@@ -358,7 +358,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Brynden Tully",
     "title": "Vanguard Infiltrator",
     "id": "byrndentullyvangyardinfiltrator",
@@ -370,7 +370,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Crannogman Survivalist",
     "id": "crannogmansurvivalist",
     "role": "attachment",
@@ -378,7 +378,7 @@
     "points": 1
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Crannogman Warden",
     "id": "crannogmanwarden",
     "role": "attachment",
@@ -386,7 +386,7 @@
     "points": 1
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Eddard Stark",
     "title": "Lord of Winterfell",
     "id": "eddardstarklordofwinterfell",
@@ -399,7 +399,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Greatjon Umber",
     "title": "Fierce Bannerman",
     "id": "greatjonumberfiercebannerman",
@@ -411,7 +411,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Greatjon Umber",
     "title": "Lord of Last Hearth",
     "id": "greatjonumberlordoflasthearth",
@@ -424,7 +424,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Howland Reed",
     "title": "Lord of the Crannogs",
     "id": "howlandreedlordofthecrannogs",
@@ -437,7 +437,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Jaqen H'Ghar",
     "title": "Mysterious Prisoner",
     "id": "jaqenhgharmysteriousprisoner",
@@ -454,7 +454,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Jojen Reed",
     "title": "Greensight",
     "id": "jojenreedgreensight",
@@ -466,7 +466,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Loyalist Captain",
     "id": "loyalistcaptain",
     "role": "attachment",
@@ -474,7 +474,7 @@
     "points": 1
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Maege Mormont",
     "title": "Lady of Bear Island",
     "id": "maegemormontladyofbearisland",
@@ -487,7 +487,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Maege Mormont",
     "title": "The She-Bear",
     "id": "maegemormonttheshebear",
@@ -499,7 +499,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Meera Reed",
     "title": "Cunning Trapper",
     "id": "meerareedcunningtrapper",
@@ -511,7 +511,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Mormont Veteran",
     "id": "mormontveteran",
     "role": "attachment",
@@ -519,7 +519,7 @@
     "points": 1
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Osha",
     "title": "Spearwife Guardian",
     "id": "oshaspearwifeguardian",
@@ -540,7 +540,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Rickard Karstark",
     "title": "Lord of Karhold",
     "id": "rickardkarstarklordofkarhold",
@@ -553,7 +553,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Rickard Karstark",
     "title": "Vengeful Bannerman",
     "id": "rickardkarstarkvengefulbannerman",
@@ -565,7 +565,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Rickon Stark",
     "title": "Prince of Winterfell",
     "id": "rickonstarkprinceofwinterfell",
@@ -577,7 +577,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Robb Stark",
     "title": "The Wolf Lord",
     "id": "robbstarkthewolflord",
@@ -590,7 +590,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Robb Stark",
     "title": "The Young Wolf",
     "id": "robbstarktheyoungwolf",
@@ -602,7 +602,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Rodrik Cassel",
     "title": "Master-At-Arms",
     "id": "rodrikcasselmasteratarms",
@@ -615,7 +615,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Sworn Sword Captain",
     "id": "swornswordcaptain",
     "role": "attachment",
@@ -623,7 +623,7 @@
     "points": 1
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Syrio Forell",
     "title": "First Blade of Braavos",
     "id": "syrioforellfirstbladeofbraavos",
@@ -644,7 +644,7 @@
     ]
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Umber Champion",
     "id": "umberchampion",
     "role": "attachment",
@@ -652,7 +652,7 @@
     "points": 1
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Winterfell Guardian",
     "id": "winterfellguardian",
     "role": "attachment",
@@ -660,11 +660,27 @@
     "points": 1
   },
   {
-    "faction": "starks",
+    "faction": "stark",
     "name": "Winterfell Champion",
     "id": "winterfellchampion",
     "role": "attachment",
     "type": "infantry",
     "points": 1
+  },
+  {
+    "faction": "neutral",
+    "name": "House Bolton Cutthroats",
+    "id": "houseboltoncutthroats",
+    "role": "combat_unit",
+    "type": "infantry",
+    "points": 5
+  },
+  {
+    "faction": "lannister",
+    "name": "Lannister Guardsmen",
+    "id": "lannisterguardsmen",
+    "role": "combat_unit",
+    "type": "infantry",
+    "points": 5
   }
 ]

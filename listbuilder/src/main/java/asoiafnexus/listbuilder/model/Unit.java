@@ -1,6 +1,10 @@
 package asoiafnexus.listbuilder.model;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public record Unit(
         String id,
@@ -11,13 +15,25 @@ public record Unit(
         Role role,
         Type type,
         int points,
-        List<Attributes> attributes,
+        Set<Attributes> attributes,
         List<Excludes> excludes,
         List<Requires> requires
 
         ) {
-    public enum Faction {
-        starks
+
+    @Override
+    public Set<Attributes> attributes() {
+        return Optional.ofNullable(attributes).orElse(Set.of());
+    }
+
+    @Override
+    public List<Excludes> excludes() {
+        return Optional.ofNullable(excludes).orElse(List.of());
+    }
+
+    @Override
+    public List<Requires> requires() {
+        return Optional.ofNullable(requires).orElse(List.of());
     }
 
     public enum Role {

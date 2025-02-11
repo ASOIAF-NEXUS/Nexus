@@ -4,9 +4,9 @@ import asoiafnexus.listbuilder.model.Unit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -15,13 +15,13 @@ import java.util.stream.Collectors;
 /**
  * Functions and capabilities for interacting with unit data.
  */
-@Service
+@Component
 public class Units {
 
     private static final Logger log = LoggerFactory.getLogger(Units.class);
     private Map<String, Unit> unitLookup;
 
-    public Units(ObjectMapper mapper) {
+    public Units(@Autowired ObjectMapper mapper) {
         try (var io = Units.class.getClassLoader().getResourceAsStream("unitdata.json")) {
             var type = mapper
                     .getTypeFactory()

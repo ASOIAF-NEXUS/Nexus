@@ -1,8 +1,7 @@
 package asoiafnexus.listbuilder.controller;
 
-import asoiafnexus.listbuilder.Units;
 import asoiafnexus.listbuilder.model.ComposableEntry;
-import asoiafnexus.listbuilder.model.ListEntry;
+import asoiafnexus.listbuilder.model.Faction;
 import asoiafnexus.listbuilder.model.Unit;
 
 import java.util.List;
@@ -15,6 +14,7 @@ import java.util.stream.Stream;
  * rules will be applied
  */
 public record ArmyListPayload(
+        Faction faction,
         List<CombatUnit> combatUnits,
         List<String> ncus
 ) {
@@ -28,7 +28,7 @@ public record ArmyListPayload(
          * @param unitLookup A mapping of unit id -> {@link Unit} definition
          * @return A {@link ComposableEntry} of
          */
-        public ListEntry toListEntry(Map<String, Unit> unitLookup) {
+        public ComposableEntry toListEntry(Map<String, Unit> unitLookup) {
             var unit = unitLookup.get(this.unit);
             var attachments = this.attachments.stream().map(unitLookup::get).toList();
             return new ComposableEntry(unit, attachments);
@@ -36,12 +36,12 @@ public record ArmyListPayload(
     }
 
     /**
-     * Convert the entire army list into a list of {@link ListEntry}. This will apply all the
+     * Convert the entire army list into a list of {@link ComposableEntry}. This will apply all the
      * current balance data and validation metadata.
      * @param unitLookup A mapping of unit id -> {@link Unit} definition
      * @return The submitted army list, enriched with the current balance data
      */
-    public List<ListEntry> toListEntries(Map<String, Unit> unitLookup) {
+    public List<ComposableEntry> toListEntries(Map<String, Unit> unitLookup) {
         return Stream.concat(
                         this.combatUnits.stream().map(c -> c.toListEntry(unitLookup)),
                         this.ncus.stream().map(ncu -> new ComposableEntry(unitLookup.get(ncu), List.of())))

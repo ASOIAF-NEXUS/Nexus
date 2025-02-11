@@ -6,18 +6,11 @@ import java.util.stream.Stream;
 public record ComposableEntry(
         Unit unit,
         List<Unit> attachments
-) implements ListEntry {
+) {
 
-    @Override
-    public List<Unit> allEntries() {
+    public List<Unit> allUnits() {
         return Stream
                 .concat(Stream.of(unit), attachments.stream())
                 .toList();
-    }
-
-    public int points() {
-        return attachments.stream()
-                .map(Unit::points)
-                .reduce(unit.points(), Integer::sum);
     }
 }
