@@ -1,5 +1,6 @@
 package asoiafnexus.listbuilder.controller;
 
+import asoiafnexus.listbuilder.model.ArmyList;
 import asoiafnexus.listbuilder.model.ComposableEntry;
 import asoiafnexus.listbuilder.model.Faction;
 import asoiafnexus.listbuilder.model.Unit;
@@ -25,6 +26,7 @@ public record ArmyListPayload(
         /**
          * Convert a single combat unit with applied attachments into a {@link ComposableEntry}
          * by looking up all ids.
+         *
          * @param unitLookup A mapping of unit id -> {@link Unit} definition
          * @return A {@link ComposableEntry} of
          */
@@ -38,14 +40,17 @@ public record ArmyListPayload(
     /**
      * Convert the entire army list into a list of {@link ComposableEntry}. This will apply all the
      * current balance data and validation metadata.
+     *
      * @param unitLookup A mapping of unit id -> {@link Unit} definition
      * @return The submitted army list, enriched with the current balance data
      */
-    public List<ComposableEntry> toListEntries(Map<String, Unit> unitLookup) {
-        return Stream.concat(
-                        this.combatUnits.stream().map(c -> c.toListEntry(unitLookup)),
-                        this.ncus.stream().map(ncu -> new ComposableEntry(unitLookup.get(ncu), List.of())))
-                .toList();
+    public ArmyList toArmyList(Map<String, Unit> unitLookup) {
+        return new ArmyList(
+                this.faction,
+                Stream.concat(
+                                this.combatUnits.stream().map(c -> c.toListEntry(unitLookup)),
+                                this.ncus.stream().map(ncu -> new ComposableEntry(unitLookup.get(ncu), List.of())))
+                        .toList());
     }
 
     /**

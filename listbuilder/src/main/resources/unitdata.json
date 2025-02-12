@@ -41,8 +41,8 @@
   },
   {
     "faction": "stark",
-    "name": "Eddardd's Honor Guard",
-    "id": "eddarddshonorguard",
+    "name": "Eddard's Honor Guard",
+    "id": "eddardshonorguard",
     "role": "combat_unit",
     "type": "infantry",
     "points": 6,
@@ -674,6 +674,14 @@
     "role": "combat_unit",
     "type": "infantry",
     "points": 5
+  },
+  {
+    "faction": "neutral",
+    "name": "House Bolton Flayed Men",
+    "id": "houseboltonflayedmen",
+    "role": "combat_unit",
+    "type": "cavalry",
+    "points": 8
   },
   {
     "faction": "lannister",
