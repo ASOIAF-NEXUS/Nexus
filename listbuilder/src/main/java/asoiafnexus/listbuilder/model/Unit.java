@@ -1,9 +1,7 @@
 package asoiafnexus.listbuilder.model;
 
-import com.fasterxml.jackson.annotation.JsonSetter;
-
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -18,9 +16,9 @@ public record Unit(
         int points,
         Set<Attributes> attributes,
         List<Excludes> excludes,
-        List<Requires> requires
-
-        ) {
+        List<Requires> requires,
+        String loyalty
+        ) implements Named {
 
     @Override
     public Set<Attributes> attributes() {
@@ -52,22 +50,17 @@ public record Unit(
     public record Excludes(
             String name,
             String title
-    ) { }
+    ) implements Named { }
 
     public record Requires(
             String name,
             String title,
             Set<Attributes> attributes
-    ) {
+    ) implements Named {
+        public Set<Attributes> attributes() { return Optional.ofNullable(attributes).orElse(Collections.emptySet()); }
+
         public enum Attributes {
             ignores_attachment_limits, same_combat_unit
-        }
-
-        public boolean isMatch(Unit unit) {
-            var match = true;
-            if(Objects.nonNull(name)) match &= Objects.equals(name, unit.name);
-            if(Objects.nonNull(title)) match &= Objects.equals(title, unit.title);
-            return match;
         }
     }
 
@@ -75,18 +68,10 @@ public record Unit(
         return points > 0 && role == Role.attachment;
     }
 
-    public String fullName() {
-        if(Objects.nonNull(title)) {
-            return name + ", " + title;
-        } else {
-            return name;
-        }
-    }
-
     public Unit applyAdaptive() {
         if(points <= 0) throw new IllegalArgumentException(String.format("Tried to apply adaptive to a unit '%s' without points", id));
         if(role != Role.attachment) throw new IllegalArgumentException("Adaptive can only discount attachments");
-        return new Unit(id, faction, name, title, includes, role, type, points - 1, attributes, excludes, requires);
+        return new Unit(id, faction, name, title, includes, role, type, points - 1, attributes, excludes, requires, loyalty);
     }
 
     public boolean isSolo() {

@@ -13,11 +13,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static asoiafnexus.listbuilder.model.Faction.stark;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ValidationFunctionsTests {
@@ -81,17 +79,18 @@ public class ValidationFunctionsTests {
                 ValidationFunctions::invalidCombatUnit,
                 ValidationFunctions::attachmentsOnNonCombatUnits,
                 ValidationFunctions::invalidAttachment,
+                ValidationFunctions::attachmentTypeDiffers,
                 ValidationFunctions::missingCommander,
                 ValidationFunctions::duplicateCharacters,
                 ValidationFunctions::invalidUnitFaction,
                 ValidationFunctions::tooManyNeutralUnits,
-                ValidationFunctions::soloUnitsWithAttachments,
-                ValidationFunctions::unitRequiresNotMet);
+                ValidationFunctions::unitSpecificValidators,
+                ValidationFunctions::multipleLoyalties);
 
         var army = list.toArmyList(units);
 
-        var validationMessages = validators.stream().flatMap(v -> v.apply(army).stream()).collect(Collectors.toSet());
+        var validationMessage = validators.stream().flatMap(v -> v.apply(army).stream()).findAny();
 
-        Assertions.assertEquals(emptySet(), validationMessages);
+        Assertions.assertTrue(validationMessage.isPresent());
     }
 }

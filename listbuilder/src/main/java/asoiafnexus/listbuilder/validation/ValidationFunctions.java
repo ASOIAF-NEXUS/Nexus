@@ -5,6 +5,8 @@ import asoiafnexus.listbuilder.model.ComposableEntry;
 import asoiafnexus.listbuilder.model.Unit;
 
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static asoiafnexus.listbuilder.model.Faction.*;
@@ -17,22 +19,22 @@ import static java.util.Collections.emptyList;
  * restriction to the number of each individual Unit and/or Attachment
  * that you may field, with the following exceptions:
  * •  Your army may only include 1 Commander. If your
- *    Commander is an Attachment, your army must include a unit
- *    for the Commander to be attached to.
+ * Commander is an Attachment, your army must include a unit
+ * for the Commander to be attached to.
  * •  Units and/or Attachments that list CHARACTER on their
- *    Stat card are unique. Only 1 copy of each of these Units/
- *    Attachments may be included in your army (though you can
- *    have several different Characters in your army). Note that several
- *    Characters might have multiple versions (such as Jaime Lannister
- *    “Kingslayer” and Jaime Lannister “The Young Lion”). These are still
- *    the same Character for uniqueness.
+ * Stat card are unique. Only 1 copy of each of these Units/
+ * Attachments may be included in your army (though you can
+ * have several different Characters in your army). Note that several
+ * Characters might have multiple versions (such as Jaime Lannister
+ * “Kingslayer” and Jaime Lannister “The Young Lion”). These are still
+ * the same Character for uniqueness.
  * •  When adding Attachments into your army, they must be
- *    included in a Combat Unit, and each Combat Unit may only
- *    ever have 1 Attachment. You cannot add an Attachment into
- *    your army if there is no available Unit to place it in .
+ * included in a Combat Unit, and each Combat Unit may only
+ * ever have 1 Attachment. You cannot add an Attachment into
+ * your army if there is no available Unit to place it in .
  * •  Additionally, sometimes a Unit and/or Attachment may list
- *    special requirements or restrictions to be fielded. See that
- *    Unit/Attachment’s specific Stat card for more information.
+ * special requirements or restrictions to be fielded. See that
+ * Unit/Attachment’s specific Stat card for more information.
  */
 public class ValidationFunctions {
 
@@ -64,10 +66,20 @@ public class ValidationFunctions {
      */
     public static List<String> invalidAttachment(ArmyList army) {
         return army.units().stream()
-                .flatMap(x -> x.attachments().stream())
-                .filter(x -> !Objects.equals(x.role(), Unit.Role.attachment))
+                .flatMap(x -> x.attachments().stream().filter(y -> !Objects.equals(y.role(), Unit.Role.attachment)))
                 .map(Unit::fullName)
                 .map(s -> String.format("%s is not an attachment.", s))
+                .toList();
+    }
+
+    /**
+     * Only attachment types can be listed under attachment
+     */
+    public static List<String> attachmentTypeDiffers(ArmyList army) {
+        return army.units().stream()
+                .flatMap(x -> x.attachments().stream().filter(y -> !Objects.equals(x.unit().type(), y.type())))
+                .map(Unit::fullName)
+                .map(s -> String.format("%s cannot be attached to its combat unit.", s))
                 .toList();
     }
 
@@ -92,9 +104,9 @@ public class ValidationFunctions {
                 .filter(x -> x.attributes().contains(Unit.Attributes.commander))
                 .count();
 
-        if(commanderCount == 0) {
+        if (commanderCount == 0) {
             return List.of("Every army must list a commander.");
-        } else if(commanderCount > 1) {
+        } else if (commanderCount > 1) {
             return List.of("The army may only contain one commander.");
         } else {
             return List.of();
@@ -138,43 +150,102 @@ public class ValidationFunctions {
                 .map(Unit::points)
                 .reduce(0, Integer::sum);
 
-        if(neutralPoints > (totalPoints * .3)) {
+        if (neutralPoints > (totalPoints * .3)) {
             return List.of("Too many neutral points.");
         } else {
             return List.of();
         }
     }
 
-    /**
-     * Solo units may not take attachments
-     */
-    public static List<String> soloUnitsWithAttachments(ArmyList army) {
-        return army.units().stream()
-                .filter(x -> x.unit().isSolo() && !x.attachments().isEmpty())
-                .map(x -> x.unit().fullName())
-                .map(s -> String.format("%s can not have any units attached to it.", s))
-                .toList();
+    public static boolean shouldValidateSoloUnit(Unit unit) {
+        return unit.attributes().contains(Unit.Attributes.solo);
     }
 
     /**
-     * Some units require other units in order to be taken
+     * Builds a validator for a unit with the solo attribute
+     *
+     * @param unit   The solo unit
+     * @param parent The combat unit it is recorded in
+     * @return A validator that asserts the unit's constraint
      */
-    public static List<String> unitRequiresNotMet(ArmyList army) {
-        var combatUnits = army.units();
+    public static Function<ArmyList, List<String>> validateSoloUnit(Unit unit, ComposableEntry parent) {
+        return _ -> {
+            if (parent.unit() == unit && parent.attachments().isEmpty()) {
+                return emptyList();
+            } else {
+                return List.of(String.format("%s is a Solo unit and may not have any attachments", unit.fullName()));
+            }
+        };
+    }
 
-        return army.unitStream()
-                .filter(x -> !x.requires().isEmpty())
-                .filter(unit -> unit.requires().stream()
-                        .noneMatch(requirement -> combatUnits.stream().anyMatch(combatUnit -> {
-                            var match = combatUnit.allUnits().stream().anyMatch(requirement::isMatch);
+    public static boolean shouldCheckUnitRequires(Unit unit) {
+        return !unit.requires().isEmpty();
+    }
 
-                            //TODO this still feels clunky. Unit model might be able to be improved
-                            if(match && requirement.attributes().contains(Unit.Requires.Attributes.same_combat_unit)) {
-                                match = combatUnit.allUnits().contains(unit);
-                            }
-                            return match;
-                        })))
-                .map(unit -> String.format("None of the unit requirements for %s are present.", unit.fullName()))
+    /**
+     * Builds a validator for a unit that requires other entries in the army list
+     *
+     * @param unit   The Unit with requirement validation
+     * @param parent The combat unit it is recorded in
+     * @return A validator that asserts the unit's constraint
+     */
+    public static Function<ArmyList, List<String>> unitRequiresNotMet(Unit unit, ComposableEntry parent) {
+        return army -> unit.requires().stream()
+                .filter(req -> {
+                    var units = req.attributes().contains(Unit.Requires.Attributes.same_combat_unit)
+                            ? parent.allUnits().stream()
+                            : army.unitStream();
+                    return units.anyMatch(req::isMatch);
+                })
+                .findAny()
+                .map(_ -> List.<String>of())
+                .orElse(List.of(String.format("Required units for %s not present.", unit.fullName())));
+    }
+
+    public static boolean shouldCheckUnitExcludes(Unit unit) {
+        return !unit.excludes().isEmpty();
+    }
+
+    /**
+     * Builds a validator for a unit that fails whenever another specified unit is present
+     *
+     * @param unit   The Unit with requirement validation
+     * @param parent The combat unit it is recorded in
+     * @return A validator that asserts the unit's constraint
+     */
+    public static Function<ArmyList, List<String>> unitExcludesNotMet(Unit unit, ComposableEntry parent) {
+        return army -> unit.excludes().stream()
+                .filter(exc -> {
+                    var units = army.unitStream();
+                    return units.anyMatch(exc::isMatch);
+                })
+                .map(exc -> String.format("Cannot field %s when taking %s", exc.fullName(), unit.fullName()))
                 .toList();
+    }
+
+    private static final Map<Function<Unit, Boolean>, BiFunction<Unit, ComposableEntry, Function<ArmyList, List<String>>>>
+            unitSpecificValidators = Map.of(
+            ValidationFunctions::shouldValidateSoloUnit, ValidationFunctions::validateSoloUnit,
+            ValidationFunctions::shouldCheckUnitExcludes, ValidationFunctions::unitExcludesNotMet,
+            ValidationFunctions::shouldCheckUnitRequires, ValidationFunctions::unitRequiresNotMet
+    );
+
+    public static List<String> unitSpecificValidators(ArmyList army) {
+        return army.units().stream().flatMap(x ->
+                x.allUnits().stream().flatMap(y ->
+                unitSpecificValidators.entrySet().stream().filter(e -> e.getKey().apply(y)).map(e -> e.getValue().apply(y, x))))
+                .flatMap(v -> v.apply(army).stream())
+                .toList();
+    }
+
+    public static List<String> multipleLoyalties(ArmyList army) {
+        var loyalties = army.unitStream()
+                .filter(unit -> Objects.nonNull(unit.loyalty()))
+                .collect(Collectors.groupingBy(Unit::loyalty, Collectors.counting()));
+        if(loyalties.size() > 1) {
+            return List.of("An army cannot contain units of different loyalties.");
+        } else {
+            return List.of();
+        }
     }
 }

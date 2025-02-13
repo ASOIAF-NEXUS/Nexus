@@ -1,7 +1,9 @@
 package asoiafnexus.listbuilder.controller;
 
 import asoiafnexus.listbuilder.Units;
+import asoiafnexus.listbuilder.model.ArmyList;
 import asoiafnexus.listbuilder.model.Unit;
+import asoiafnexus.listbuilder.validation.ValidationFunctions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/listbuilder")
@@ -24,6 +28,19 @@ public class ListBuilderController {
     List<Unit> getAllUnits() {
         return units.allUnits();
     }
+
+    private static final List<Function<ArmyList, List<String>>> validators = List.of(
+            ValidationFunctions::noNullCombatUnits,
+            ValidationFunctions::invalidCombatUnit,
+            ValidationFunctions::attachmentsOnNonCombatUnits,
+            ValidationFunctions::invalidAttachment,
+            ValidationFunctions::attachmentTypeDiffers,
+            ValidationFunctions::missingCommander,
+            ValidationFunctions::duplicateCharacters,
+            ValidationFunctions::invalidUnitFaction,
+            ValidationFunctions::tooManyNeutralUnits,
+            ValidationFunctions::unitSpecificValidators,
+            ValidationFunctions::multipleLoyalties);
 
     @PostMapping("/validate")
     ResponseEntity<?> validateArmyList(@RequestBody ArmyListPayload payload) {
@@ -40,7 +57,13 @@ public class ListBuilderController {
         log.info(armyList.toString());
         // run validators against the enriched army list
 
+        var errorMessages = validators.stream().flatMap(v -> v.apply(armyList).stream()).collect(Collectors.toSet());
         // return any validation errors collected
-        return ResponseEntity.ok().build();
+        if(errorMessages.isEmpty()) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().body(errorMessages);
+        }
+
     }
 }
