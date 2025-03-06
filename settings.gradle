@@ -6,4 +6,5 @@ rootProject.name = 'asoiaf-nexus'
 
 include("user",
         "utils",
-        "listbuilder")
+        "listbuilder",
+        "tournament")
