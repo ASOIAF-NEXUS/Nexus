@@ -50,7 +50,7 @@ public class TournamentController {
      * @param t  New {@link Tournament} data being written
      * @return The updated {@link Tournament} resource
      */
-    @PutMapping("{id`}")
+    @PutMapping("/{id}")
     public Tournament updateTournament(@RequestParam UUID id, @RequestBody Tournament t) {
         db.put(id, t);
         return db.get(id);
