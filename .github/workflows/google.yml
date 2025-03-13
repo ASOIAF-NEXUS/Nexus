@@ -33,7 +33,7 @@ name: 'Build and Deploy to GKE'
 on:
   push:
     branches:
-      - "infra-terraform-gcp-tfox"
+      - "main"
 
 env:
   PROJECT_ID: 'ambient-stack-453523-h8'
