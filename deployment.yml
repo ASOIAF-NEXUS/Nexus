@@ -29,7 +29,8 @@ spec:
     app: nexus
   ports:
     - protocol: TCP
-      port: 8080
+      port: 80
+      targetPort: 8080
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -93,17 +94,12 @@ spec:
               - key: config.yaml
                 path: config.yaml
 ---
-# This ConfigMap is just a way to define the cloudflared config.yaml file in k8s.
-# It's useful to define it in k8s, rather than as a stand-alone .yaml file, because
-# this lets you use various k8s templating solutions (e.g. Helm charts) to
-# parameterize your config, instead of just using string literals.
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cloudflared
 data:
   config.yaml: |
-    # Name of the tunnel you want to run
     tunnel: nexus-tunnel
     credentials-file: /etc/cloudflared/creds/credentials.json
     # Serves the metrics server under /metrics and the readiness server under /ready
@@ -115,13 +111,7 @@ data:
     # The `ingress` block tells cloudflared which local service to route incoming
     # requests to. For more about ingress rules, see
     # https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/ingress
-    #
-    # Remember, these rules route traffic from cloudflared to a local service. To route traffic
-    # from the internet to cloudflared, run `cloudflared tunnel route dns <tunnel> <hostname>`.
-    # E.g. `cloudflared tunnel route dns example-tunnel tunnel.example.com`.
     ingress:
-    # This rule routes any traffic originating from `backend.asoiaf.nexus` -> `nexus-service` defined above
     - hostname: backend.asoiaf.nexus
-      service: http://nexus-service:8080
-    # This rule matches any traffic which didn't match a previous rule, and responds with HTTP 404.
+      service: http://nexus-service:80
     - service: http_status:404
