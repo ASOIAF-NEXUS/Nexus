@@ -22,7 +22,7 @@ public class TournamentController {
     @PostMapping
     public Tournament newTournament(@RequestBody Tournament t) {
         var id = UUID.randomUUID();
-        var newTournament = new Tournament(id, t.name(), t.description(), t.datetime(), t.players());
+        var newTournament = new Tournament(id, t.name(), t.description(), t.location(), t.datetime(), t.players());
         db.put(id, newTournament);
         return newTournament;
     }

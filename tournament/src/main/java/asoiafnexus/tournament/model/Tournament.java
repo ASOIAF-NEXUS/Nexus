@@ -8,6 +8,7 @@ public record Tournament(
         UUID id,
         String name,
         String description,
+        String location,
         ZonedDateTime datetime,
         List<String> players
 ) {
