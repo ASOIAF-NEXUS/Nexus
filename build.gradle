@@ -100,6 +100,9 @@ dependencies {
 }
 
 tasks.register('cucumberCli', JavaExec) {
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(23)
+    }
     dependsOn assemble, testClasses
     mainClass = "io.cucumber.core.cli.Main"
     classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
