@@ -72,7 +72,7 @@ public class TournamentController {
      */
     @PutMapping("/{id}")
     public Tournament updateTournament(@PathVariable UUID id, @RequestBody TournamentInput input) {
-        return db.computeIfPresent(id, (_, t) ->
+        return db.computeIfPresent(id, (x, t) ->
                 new Tournament(
                         id,
                         input.name(),
@@ -98,7 +98,7 @@ public class TournamentController {
         }
 
         return ResponseEntity.ok()
-                .body(db.computeIfPresent(id, (_, t) ->
+                .body(db.computeIfPresent(id, (x, t) ->
                         new Tournament(
                                 t.id(),
                                 t.name(),
@@ -124,7 +124,7 @@ public class TournamentController {
         }
 
         return ResponseEntity.ok()
-                .body(db.computeIfPresent(id, (_, t) ->
+                .body(db.computeIfPresent(id, (x, t) ->
                         new Tournament(
                                 t.id(),
                                 t.name(),
@@ -145,7 +145,7 @@ public class TournamentController {
      */
     @PostMapping("/{id}/start")
     public Tournament startTournament(@PathVariable UUID id) {
-        return db.computeIfPresent(id, (_, t) ->
+        return db.computeIfPresent(id, (x, t) ->
                 new Tournament(
                         t.id(),
                         t.name(),
@@ -176,7 +176,7 @@ public class TournamentController {
         }
 
         return ResponseEntity.ok()
-                .body(db.computeIfPresent(id, (_, t) ->
+                .body(db.computeIfPresent(id, (x, t) ->
                         new Tournament(
                                 t.id(),
                                 t.name(),

@@ -11,7 +11,7 @@ public interface MakePairings {
      * Creates a new set of pairings by randomizing the players and grouping
      * two at a time. Does not take pairing history into consideration.
      */
-    MakePairings RandomPairings = (p, _) -> {
+    MakePairings RandomPairings = (p, x) -> {
         var players = new ArrayList<>(p);
         Collections.shuffle(players);
         var newPairings = new ArrayList<Pairing>();
