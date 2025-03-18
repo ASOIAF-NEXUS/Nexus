@@ -108,7 +108,7 @@ tasks.register('cucumberCli', JavaExec) {
     classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
     args = [
             '--plugin', 'pretty',
-            '--plugin', 'html:target/cucumber-report.html',
+            '--plugin', 'html:build/reports/tests/cucumber-report.html',
             '--glue', 'asoiafnexus.cucumber',
             'src/test/resources']
 }
