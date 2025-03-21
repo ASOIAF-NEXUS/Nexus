@@ -16,15 +16,14 @@ import org.springframework.test.context.ContextConfiguration;
 public class CucumberSpringContextConfiguration {
     private static final Logger LOG = LoggerFactory.getLogger(CucumberSpringContextConfiguration.class);
 
-    public static int port;
-
     @LocalServerPort
-    private int portConstructor;
+    private int port;
 
     @Before
     public void setUp() {
         LOG.info("-------------- Spring Context Initialized For Executing Cucumber Tests --------------");
-        port = portConstructor;
-        NexusClient.instance.withToken(null);
+        NexusClient.instance
+                .withPort(port)
+                .withToken(null);
     }
 }

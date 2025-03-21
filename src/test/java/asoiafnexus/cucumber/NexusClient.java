@@ -33,6 +33,13 @@ public class NexusClient {
         return this;
     }
 
+    private int port = 0;
+
+    public NexusClient withPort(int port) {
+        this.port = port;
+        return this;
+    }
+
     final String password = "Test123!";
 
     public void signupUser(String username, Consumer<Response> responseHandler) throws IOException {
@@ -40,7 +47,7 @@ public class NexusClient {
                 .post(RequestBody.create(
                         objectMapper.writeValueAsString(new Login(username, password)),
                         MediaType.get("application/json")))
-                .url(String.format("http://localhost:%d/api/v1/users/signup", CucumberSpringContextConfiguration.port))
+                .url(String.format("http://localhost:%d/api/v1/users/signup", port))
                 .build();
 
         try(var response = client.newCall(request).execute()) {
@@ -53,7 +60,7 @@ public class NexusClient {
                 .post(RequestBody.create(
                         objectMapper.writeValueAsString(new Login(username, password)),
                         MediaType.get("application/json")))
-                .url(String.format("http://localhost:%d/api/v1/users/login", CucumberSpringContextConfiguration.port))
+                .url(String.format("http://localhost:%d/api/v1/users/login", port))
                 .build();
 
         try(var response = client.newCall(request).execute()) {
@@ -67,7 +74,7 @@ public class NexusClient {
                         objectMapper.writeValueAsString(t),
                         MediaType.get("application/json")))
                 .header("Authorization", "Bearer " + this.token)
-                .url(String.format("http://localhost:%d/api/v1/tournaments", CucumberSpringContextConfiguration.port))
+                .url(String.format("http://localhost:%d/api/v1/tournaments", port))
                 .build();
 
         try(var response = client.newCall(request).execute()) {
@@ -82,7 +89,7 @@ public class NexusClient {
                         MediaType.get("application/json")))
                 .header("Authorization", "Bearer " + this.token)
                 .url(String.format("http://localhost:%d/api/v1/tournaments/%s",
-                        CucumberSpringContextConfiguration.port,
+                        port,
                         t.id()))
                 .build();
 
@@ -98,7 +105,7 @@ public class NexusClient {
                         MediaType.get("application/json")))
                 .header("Authorization", "Bearer " + this.token)
                 .url(String.format("http://localhost:%d/api/v1/tournaments/%s/register",
-                        CucumberSpringContextConfiguration.port,
+                        port,
                         t.id()))
                 .build();
 
@@ -114,7 +121,7 @@ public class NexusClient {
                         MediaType.get("application/json")))
                 .header("Authorization", "Bearer " + this.token)
                 .url(String.format("http://localhost:%d/api/v1/tournaments/%s/withdraw",
-                        CucumberSpringContextConfiguration.port,
+                        port,
                         t.id()))
                 .build();
 
@@ -131,7 +138,7 @@ public class NexusClient {
                 ))
                 .header("Authorization", "Bearer " + this.token)
                 .url(String.format("http://localhost:%d/api/v1/tournaments/%s/start",
-                        CucumberSpringContextConfiguration.port,
+                        port,
                         t.id()))
                 .build();
 
@@ -148,7 +155,7 @@ public class NexusClient {
                 ))
                 .header("Authorization", "Bearer " + this.token)
                 .url(String.format("http://localhost:%d/api/v1/tournaments/%s/pairings",
-                        CucumberSpringContextConfiguration.port,
+                        port,
                         t.id()))
                 .build();
 
@@ -159,7 +166,7 @@ public class NexusClient {
 
     public List<Tournament> getAllTournaments() throws IOException {
         var request = new Request.Builder()
-                .url(String.format("http://localhost:%d/api/v1/tournaments", CucumberSpringContextConfiguration.port))
+                .url(String.format("http://localhost:%d/api/v1/tournaments", port))
                 .get()
                 .build();
 
