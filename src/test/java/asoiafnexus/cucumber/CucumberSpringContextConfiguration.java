@@ -25,5 +25,6 @@ public class CucumberSpringContextConfiguration {
     public void setUp() {
         LOG.info("-------------- Spring Context Initialized For Executing Cucumber Tests --------------");
         port = portConstructor;
+        NexusClient.instance.withToken(null);
     }
 }

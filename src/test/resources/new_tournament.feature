@@ -1,5 +1,18 @@
 Feature: A Tournament Organizer creates a new event
 
+  Background: All of these users have signed up
+    Given The following users have signed up
+      | username                         |
+      | tournament-organizer@testing.com |
+      | player1@testing.com              |
+      | player2@testing.com              |
+      | player3@testing.com              |
+      | player4@testing.com              |
+      | player5@testing.com              |
+      | player6@testing.com              |
+      | player7@testing.com              |
+      | player8@testing.com              |
+
   Scenario: Creating the event
     Given a user "tournament-organizer@testing.com"
     When a tournament is created with the information
@@ -58,13 +71,15 @@ Feature: A Tournament Organizer creates a new event
       | player8@testing.com |
 
   Scenario: Starting An Event
-    Given a tournament named "Winter is Coming"
+    Given a user "tournament-organizer@testing.com"
+    And a tournament named "Winter is Coming"
     When the tournament "Winter is Coming" is started
     Then 2 random pairings are created for the tournament "Winter is Coming"
     And any player can no longer sign up for the tournament "Winter is Coming"
 
   Scenario: Override Pairings
-    Given a tournament named "Winter is Coming"
+    Given a user "tournament-organizer@testing.com"
+    And a tournament named "Winter is Coming"
     And the tournament "Winter is Coming" is already started
     When pairings are provided to the tournament "Winter is Coming"
       | p1                  | p2                  |

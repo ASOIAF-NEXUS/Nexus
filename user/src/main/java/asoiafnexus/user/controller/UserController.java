@@ -28,7 +28,13 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody Login login) {
-        ((InMemoryUserDetailsManager) users).createUser(
+        var mgr = ((InMemoryUserDetailsManager) users);
+
+        if(mgr.userExists(login.username())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        mgr.createUser(
                 org.springframework.security.core.userdetails.User
                         .withUsername(login.username())
                         .password(login.password())

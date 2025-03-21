@@ -3,6 +3,7 @@ package asoiafnexus.cucumber;
 import asoiafnexus.tournament.model.Pairing;
 import asoiafnexus.tournament.model.Player;
 import asoiafnexus.tournament.model.Tournament;
+import asoiafnexus.user.model.Login;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -24,15 +25,7 @@ import java.util.stream.Collectors;
 public class TournamentScenarios {
     private static final Logger LOG = LoggerFactory.getLogger(TournamentScenarios.class);
 
-    NexusClient client = new NexusClient();
-
-    @Given("a user {string}")
-    public void givenUser(String userName) {
-        /*
-         * TODO: user logins & permissions not implemented yet.
-         */
-        LOG.info(userName);
-    }
+    NexusClient client = NexusClient.instance;
 
     /**
      * From the list of all tournaments in the system, find the one that matches the expected name
@@ -133,8 +126,10 @@ public class TournamentScenarios {
     public void playersSignup(String name, DataTable players) throws IOException {
         var tournament = tournamentByName(name).orElseThrow();
         players.asMaps().forEach(p -> {
-            var player = new Player(p.get("username"));
+            var username = p.get("username");
+            var player = new Player(username);
             try {
+                client.withToken(client.loginUser(username));
                 client.tournamentSignup(tournament, player, response -> {
                     logBodyIfPresent(response.body());
                     Assertions.assertTrue(response.isSuccessful());
@@ -149,8 +144,10 @@ public class TournamentScenarios {
     public void playersWithdraw(String name, DataTable players) throws IOException {
         var tournament = tournamentByName(name).orElseThrow();
         players.asMaps().forEach(p -> {
-            var player = new Player(p.get("username"));
+            var username = p.get("username");
+            var player = new Player(username);
             try {
+                client.withToken(client.loginUser(username));
                 client.tournamentWithdraw(tournament, player, response -> {
                     logBodyIfPresent(response.body());
                     Assertions.assertTrue(response.isSuccessful());
