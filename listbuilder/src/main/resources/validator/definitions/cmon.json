@@ -1,0 +1,34 @@
+{
+    "definitions":
+    [
+        {
+            "id": "cmon",
+            "name": "Official CMON Rules",
+            "seasons": ["2024-S05"],
+            "general": {
+                "army_size": {
+                    "name": "Army size",
+                    "description": "Total army point value",
+                    "input": "integer",
+                    "error_text": "Army exceeds maximum point value (%d > %d)",
+                    "allow_override": true
+                },
+                "commander_required": {
+                    "name": "Commander required",
+                    "description": "A commander is required",
+                    "input": "boolean",
+                    "error_text": "Army must have one commander",
+                    "allow_override": false
+                }
+            },
+            "faction": {
+                "attachment_cost_modifier": {
+                    "name": "Faction attachment cost modifier",
+                    "description": "An array of cost adjustments for the nth attachment in the list",
+                    "input": "integer[]",
+                    "array_type": "integer"
+                }
+            }
+        }
+    ]
+}

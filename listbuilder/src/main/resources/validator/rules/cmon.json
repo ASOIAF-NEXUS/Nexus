@@ -1,0 +1,14 @@
+{ 
+    "rules": [
+        {
+            "id": "CMON-2024-S05",
+            "validator": "cmon",
+            "name": "Official CMON Rules for 2024 Season 5",
+            "season": "2024-S05",
+            "general": [
+                { "army_size": "40" },
+                { "commander_required": "true" }
+            ]
+        }
+    ]
+}

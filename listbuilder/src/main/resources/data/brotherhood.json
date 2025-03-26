@@ -1,4 +1,9 @@
 {
+    "rules": [
+        {
+            "attachment_modifier": [-1] 
+        }
+    ],
     "units": [
         {
             "id": "11101",
