@@ -21,7 +21,7 @@ public record Tournament(
     public List<Pairing> newPairings(MakePairings strategy) {
         return Stream.concat(
                 pairings.stream(),
-                strategy.makePairings(players, pairings).stream()
+                strategy.makePairings(players).stream()
         ).toList();
     }
 }
