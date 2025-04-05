@@ -16,9 +16,9 @@ public class MakePairingsTest {
             return pairings.stream()
                     .map(x -> {
                         if(x.bye()) {
-                            return Set.of(x.p1().username());
+                            return Set.of(x.p1());
                         } else {
-                            return Set.of(x.p1().username(), x.p2().username());
+                            return Set.of(x.p1(), x.p2());
                         }
                     })
                     .collect(Collectors.toSet());
@@ -27,14 +27,14 @@ public class MakePairingsTest {
         @Test
         public void noFirstRound() {
             var players = List.of(
-                    new Player("p1", List.of(), Collections.emptyList()),
-                    new Player("p2", List.of(), Collections.emptyList()),
-                    new Player("p3", List.of(), Collections.emptyList()),
-                    new Player("p4", List.of(), Collections.emptyList()),
-                    new Player("p5", List.of(), Collections.emptyList()),
-                    new Player("p6", List.of(), Collections.emptyList()),
-                    new Player("p7", List.of(), Collections.emptyList()),
-                    new Player("p8", List.of(), Collections.emptyList())
+                    new Participant("p1", List.of(), Collections.emptyList()),
+                    new Participant("p2", List.of(), Collections.emptyList()),
+                    new Participant("p3", List.of(), Collections.emptyList()),
+                    new Participant("p4", List.of(), Collections.emptyList()),
+                    new Participant("p5", List.of(), Collections.emptyList()),
+                    new Participant("p6", List.of(), Collections.emptyList()),
+                    new Participant("p7", List.of(), Collections.emptyList()),
+                    new Participant("p8", List.of(), Collections.emptyList())
             );
             var pairings = MakePairings.SortedPairings.makePairings(players);
 
@@ -49,14 +49,14 @@ public class MakePairingsTest {
         @Test
         public void secondRound() {
             var players = List.of(
-                    new Player("p1", List.of(new Player.Result(0, "p2", List.of(3, 4, 15))), Collections.emptyList()),
-                    new Player("p2", List.of(new Player.Result(0, "p1", List.of(1, 0, 15))), Collections.emptyList()),
-                    new Player("p3", List.of(new Player.Result(0, "p4", List.of(1, 0, 15))), Collections.emptyList()),
-                    new Player("p4", List.of(new Player.Result(0, "p3", List.of(3, 4, 15))), Collections.emptyList()),
-                    new Player("p5", List.of(new Player.Result(0, "p6", List.of(2, 2, 15))), Collections.emptyList()),
-                    new Player("p6", List.of(new Player.Result(0, "p5", List.of(2, 2, 15))), Collections.emptyList()),
-                    new Player("p7", List.of(new Player.Result(0, "p8", List.of(3, 4, 15))), Collections.emptyList()),
-                    new Player("p8", List.of(new Player.Result(0, "p7", List.of(0, 0, 15))), Collections.emptyList())
+                    new Participant("p1", List.of(new Participant.Result(0, "p2", List.of(3, 4, 15))), Collections.emptyList()),
+                    new Participant("p2", List.of(new Participant.Result(0, "p1", List.of(1, 0, 15))), Collections.emptyList()),
+                    new Participant("p3", List.of(new Participant.Result(0, "p4", List.of(1, 0, 15))), Collections.emptyList()),
+                    new Participant("p4", List.of(new Participant.Result(0, "p3", List.of(3, 4, 15))), Collections.emptyList()),
+                    new Participant("p5", List.of(new Participant.Result(0, "p6", List.of(2, 2, 15))), Collections.emptyList()),
+                    new Participant("p6", List.of(new Participant.Result(0, "p5", List.of(2, 2, 15))), Collections.emptyList()),
+                    new Participant("p7", List.of(new Participant.Result(0, "p8", List.of(3, 4, 15))), Collections.emptyList()),
+                    new Participant("p8", List.of(new Participant.Result(0, "p7", List.of(0, 0, 15))), Collections.emptyList())
             );
             var pairings = MakePairings.SortedPairings.makePairings(players);
 
@@ -73,37 +73,37 @@ public class MakePairingsTest {
         @Test
         public void thirdRound() {
             var players = List.of(
-                    new Player("p1", List.of(
-                            new Player.Result(0, "p2", List.of(3, 4, 15)),
-                            new Player.Result(1, "p4", List.of(3, 4, 15))
+                    new Participant("p1", List.of(
+                            new Participant.Result(0, "p2", List.of(3, 4, 15)),
+                            new Participant.Result(1, "p4", List.of(3, 4, 15))
                     ), Collections.emptyList()),
-                    new Player("p2", List.of(
-                            new Player.Result(0, "p1", List.of(1, 0, 15)),
-                            new Player.Result(1, "p6", List.of(1, 0, 15))
+                    new Participant("p2", List.of(
+                            new Participant.Result(0, "p1", List.of(1, 0, 15)),
+                            new Participant.Result(1, "p6", List.of(1, 0, 15))
                     ), Collections.emptyList()),
-                    new Player("p3", List.of(
-                            new Player.Result(0, "p4", List.of(1, 0, 15)),
-                            new Player.Result(1, "p8", List.of(3, 4, 20))
+                    new Participant("p3", List.of(
+                            new Participant.Result(0, "p4", List.of(1, 0, 15)),
+                            new Participant.Result(1, "p8", List.of(3, 4, 20))
                     ), Collections.emptyList()),
-                    new Player("p4", List.of(
-                            new Player.Result(0, "p3", List.of(3, 4, 15)),
-                            new Player.Result(1, "p1", List.of(1, 0, 0))
+                    new Participant("p4", List.of(
+                            new Participant.Result(0, "p3", List.of(3, 4, 15)),
+                            new Participant.Result(1, "p1", List.of(1, 0, 0))
                     ), Collections.emptyList()),
-                    new Player("p5", List.of(
-                            new Player.Result(0, "p6", List.of(2, 2, 15)),
-                            new Player.Result(1, "p7", List.of(3, 3, 15))
+                    new Participant("p5", List.of(
+                            new Participant.Result(0, "p6", List.of(2, 2, 15)),
+                            new Participant.Result(1, "p7", List.of(3, 3, 15))
                     ), Collections.emptyList()),
-                    new Player("p6", List.of(
-                            new Player.Result(0, "p5", List.of(2, 2, 15)),
-                            new Player.Result(1, "p2", List.of(3, 4, 15))
+                    new Participant("p6", List.of(
+                            new Participant.Result(0, "p5", List.of(2, 2, 15)),
+                            new Participant.Result(1, "p2", List.of(3, 4, 15))
                     ), Collections.emptyList()),
-                    new Player("p7", List.of(
-                            new Player.Result(0, "p8", List.of(3, 4, 15)),
-                            new Player.Result(1, "p5", List.of(1, 0, 15))
+                    new Participant("p7", List.of(
+                            new Participant.Result(0, "p8", List.of(3, 4, 15)),
+                            new Participant.Result(1, "p5", List.of(1, 0, 15))
                     ), Collections.emptyList()),
-                    new Player("p8", List.of(
-                            new Player.Result(0, "p7", List.of(0, 0, 15)),
-                            new Player.Result(1, "p3", List.of(0, 0, 0))
+                    new Participant("p8", List.of(
+                            new Participant.Result(0, "p7", List.of(0, 0, 15)),
+                            new Participant.Result(1, "p3", List.of(0, 0, 0))
                     ), Collections.emptyList())
             );
             var pairings = MakePairings.SortedPairings.makePairings(players);
@@ -121,21 +121,21 @@ public class MakePairingsTest {
         @Test
         public void playersCannotPlayTheSameOpponentTwice() {
             var players = List.of(
-                    new Player("p1", List.of(
-                            new Player.Result(0, "p2", List.of(3, 4, 15)),
-                            new Player.Result(1, "p4", List.of(3, 4, 15))
+                    new Participant("p1", List.of(
+                            new Participant.Result(0, "p2", List.of(3, 4, 15)),
+                            new Participant.Result(1, "p4", List.of(3, 4, 15))
                     ), Collections.emptyList()),
-                    new Player("p2", List.of(
-                            new Player.Result(0, "p1", List.of(1, 0, 15)),
-                            new Player.Result(1, "p3", List.of(3, 4, 15))
+                    new Participant("p2", List.of(
+                            new Participant.Result(0, "p1", List.of(1, 0, 15)),
+                            new Participant.Result(1, "p3", List.of(3, 4, 15))
                     ), Collections.emptyList()),
-                    new Player("p3", List.of(
-                            new Player.Result(0, "p4", List.of(1, 0, 15)),
-                            new Player.Result(1, "p4", List.of(1, 0, 15))
+                    new Participant("p3", List.of(
+                            new Participant.Result(0, "p4", List.of(1, 0, 15)),
+                            new Participant.Result(1, "p4", List.of(1, 0, 15))
                     ), Collections.emptyList()),
-                    new Player("p4", List.of(
-                            new Player.Result(0, "p3", List.of(3, 4, 15)),
-                            new Player.Result(1, "p1", List.of(1, 0, 15))
+                    new Participant("p4", List.of(
+                            new Participant.Result(0, "p3", List.of(3, 4, 15)),
+                            new Participant.Result(1, "p1", List.of(1, 0, 15))
                     ), Collections.emptyList())
             );
             var pairings = MakePairings.SortedPairings.makePairings(players);
@@ -151,25 +151,25 @@ public class MakePairingsTest {
         @Test
         public void weDecidedToGoOneMoreRound() {
             var players = List.of(
-                    new Player("p1", List.of(
-                            new Player.Result(0, "p2", List.of(3, 4, 15)),
-                            new Player.Result(0, "p4", List.of(3, 4, 15)),
-                            new Player.Result(0, "p3", List.of(3, 4, 15))
+                    new Participant("p1", List.of(
+                            new Participant.Result(0, "p2", List.of(3, 4, 15)),
+                            new Participant.Result(0, "p4", List.of(3, 4, 15)),
+                            new Participant.Result(0, "p3", List.of(3, 4, 15))
                     ), Collections.emptyList()),
-                    new Player("p2", List.of(
-                            new Player.Result(0, "p1", List.of(1, 0, 15)),
-                            new Player.Result(0, "p3", List.of(3, 4, 15)),
-                            new Player.Result(0, "p4", List.of(2, 2, 15))
+                    new Participant("p2", List.of(
+                            new Participant.Result(0, "p1", List.of(1, 0, 15)),
+                            new Participant.Result(0, "p3", List.of(3, 4, 15)),
+                            new Participant.Result(0, "p4", List.of(2, 2, 15))
                     ), Collections.emptyList()),
-                    new Player("p3", List.of(
-                            new Player.Result(0, "p4", List.of(1, 0, 15)),
-                            new Player.Result(0, "p4", List.of(1, 0, 15)),
-                            new Player.Result(0, "p1", List.of(1, 0, 15))
+                    new Participant("p3", List.of(
+                            new Participant.Result(0, "p4", List.of(1, 0, 15)),
+                            new Participant.Result(0, "p4", List.of(1, 0, 15)),
+                            new Participant.Result(0, "p1", List.of(1, 0, 15))
                     ), Collections.emptyList()),
-                    new Player("p4", List.of(
-                            new Player.Result(0, "p3", List.of(3, 4, 15)),
-                            new Player.Result(0, "p1", List.of(1, 0, 15)),
-                            new Player.Result(0, "p2", List.of(2, 2, 15))
+                    new Participant("p4", List.of(
+                            new Participant.Result(0, "p3", List.of(3, 4, 15)),
+                            new Participant.Result(0, "p1", List.of(1, 0, 15)),
+                            new Participant.Result(0, "p2", List.of(2, 2, 15))
                     ), Collections.emptyList())
             );
             var pairings = MakePairings.SortedPairings.makePairings(players);
@@ -185,9 +185,9 @@ public class MakePairingsTest {
         @Test
         public void byes() {
             var players = List.of(
-                    new Player("p1", List.of(), Collections.emptyList()),
-                    new Player("p2", List.of(), Collections.emptyList()),
-                    new Player("p3", List.of(), Collections.emptyList())
+                    new Participant("p1", List.of(), Collections.emptyList()),
+                    new Participant("p2", List.of(), Collections.emptyList()),
+                    new Participant("p3", List.of(), Collections.emptyList())
             );
             var pairings = MakePairings.SortedPairings.makePairings(players);
 
@@ -202,9 +202,9 @@ public class MakePairingsTest {
         @Test
         public void byesCannotRepeat() {
             var players = List.of(
-                    new Player("p1", List.of(), Collections.emptyList()),
-                    new Player("p2", List.of(), Collections.emptyList()),
-                    new Player("p3", List.of(), Collections.emptyList())
+                    new Participant("p1", List.of(), Collections.emptyList()),
+                    new Participant("p2", List.of(), Collections.emptyList()),
+                    new Participant("p3", List.of(), Collections.emptyList())
             );
             var pairings = MakePairings.SortedPairings.makePairings(players);
 

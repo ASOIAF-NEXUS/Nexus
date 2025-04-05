@@ -1,11 +1,10 @@
 package asoiafnexus.tournament.model;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.UUID;
 
 public record Pairing(
-        Player p1,
-        Player p2
+        UUID p1,
+        UUID p2
 ) {
     public boolean bye() { return p2 == null; }
 }

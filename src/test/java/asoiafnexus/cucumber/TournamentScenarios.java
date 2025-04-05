@@ -1,9 +1,9 @@
 package asoiafnexus.cucumber;
 
+import asoiafnexus.tournament.model.Details;
 import asoiafnexus.tournament.model.Pairing;
-import asoiafnexus.tournament.model.Player;
+import asoiafnexus.tournament.model.Participant;
 import asoiafnexus.tournament.model.Tournament;
-import asoiafnexus.user.model.Login;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -35,7 +35,7 @@ public class TournamentScenarios {
      */
     private Optional<Tournament> tournamentByName(String name) throws IOException {
         return client.getAllTournaments().stream()
-                .filter(t -> Objects.requireNonNull(name).equals(t.name()))
+                .filter(t -> Objects.requireNonNull(name).equals(t.details().name()))
                 .findAny();
     }
 
@@ -47,14 +47,10 @@ public class TournamentScenarios {
     /**
      * Utility for creating a {@link Tournament} instance from a Cucumber {@link DataTable}
      */
-    public Tournament toTournament(DataTable table) {
+    public Details tournamentDetails(DataTable table) {
         var inputs = table.asMaps().getFirst();
         var notBlank = Predicate.not(String::isBlank);
-        return new Tournament(
-                Optional.ofNullable(inputs.get("id"))
-                        .filter(notBlank)
-                        .map(UUID::fromString)
-                        .orElse(null),
+        return new Details(
                 Optional.ofNullable(inputs.get("name"))
                         .filter(notBlank)
                         .orElse(null),
@@ -67,9 +63,7 @@ public class TournamentScenarios {
                 Optional.ofNullable(inputs.get("datetime"))
                         .filter(notBlank)
                         .map(ZonedDateTime::parse)
-                        .orElse(null),
-                Collections.emptyList(),
-                Collections.emptyList());
+                        .orElse(null));
     }
 
     /**
@@ -95,7 +89,7 @@ public class TournamentScenarios {
 
     @When("a tournament is created with the information")
     public void createTournament(DataTable table) throws IOException {
-        var tournament = toTournament(table);
+        var tournament = tournamentDetails(table);
 
         client.createTournament(tournament, response -> {
             logBodyIfPresent(response.body());
@@ -106,17 +100,9 @@ public class TournamentScenarios {
     @When("tournament details for {string} are updated")
     public void updateTournament(String name, DataTable table) throws IOException {
         var existing = tournamentByName(name).orElseThrow();
-        var newDetails = toTournament(table);
-        var merged = new Tournament(
-                existing.id(),
-                newDetails.name(),
-                newDetails.description(),
-                newDetails.location(),
-                newDetails.datetime(),
-                newDetails.players(),
-                newDetails.pairings());
+        var newDetails = tournamentDetails(table);
 
-        client.updateTournament(merged, response -> {
+        client.updateTournament(existing.id(), newDetails, response -> {
             logBodyIfPresent(response.body());
             Assertions.assertTrue(response.isSuccessful());
         });
@@ -127,7 +113,7 @@ public class TournamentScenarios {
         var tournament = tournamentByName(name).orElseThrow();
         players.asMaps().forEach(p -> {
             var username = p.get("username");
-            var player = new Player(username);
+            var player = new Participant(username);
             try {
                 client.withToken(client.loginUser(username));
                 client.tournamentSignup(tournament, player, response -> {
@@ -145,7 +131,7 @@ public class TournamentScenarios {
         var tournament = tournamentByName(name).orElseThrow();
         players.asMaps().forEach(p -> {
             var username = p.get("username");
-            var player = new Player(username);
+            var player = new Participant(username);
             try {
                 client.withToken(client.loginUser(username));
                 client.tournamentWithdraw(tournament, player, response -> {
@@ -170,8 +156,8 @@ public class TournamentScenarios {
     public List<Pairing> toPairings(DataTable input) {
         return input.asMaps().stream()
                 .map(p -> new Pairing(
-                        new Player(p.get("p1")),
-                        new Player(p.get("p2"))))
+                        p.get("p1"),
+                        p.get("p2")))
                 .toList();
     }
 
@@ -179,7 +165,7 @@ public class TournamentScenarios {
     public void setPairings(String name, DataTable input) throws IOException {
         var tournament = tournamentByName(name).orElseThrow();
         var pairings = toPairings(input);
-
+        LOG.info("Pairings {}", pairings);
         client.tournamentSetPairings(tournament, pairings, response -> {
             logBodyIfPresent(response.body());
             Assertions.assertTrue(response.isSuccessful());
@@ -188,11 +174,11 @@ public class TournamentScenarios {
 
     @Then("a tournament is in the list of all tournaments")
     public void verifyTournamentExists(DataTable table) throws IOException {
-        var target = toTournament(table);
+        var target = tournamentDetails(table);
         var tournaments = client.getAllTournaments();
         LOG.info("Target: {}, Result: {}", target, tournaments);
         Assertions.assertTrue(tournaments.stream()
-                .map(x -> new Tournament(null, x.name(), x.description(), x.location(), x.datetime(), x.players(), x.pairings()))
+                .map(Tournament::details)
                 .anyMatch(target::equals));
     }
 
@@ -202,8 +188,8 @@ public class TournamentScenarios {
         var expected = players.asMaps().stream()
                 .map(x -> x.get("username"))
                 .collect(Collectors.toSet());
-        var usernames = tournament.players().stream()
-                .map(Player::username)
+        var usernames = tournament.participants().stream()
+                .map(Participant::username)
                 .collect(Collectors.toSet());
         Assertions.assertEquals(expected, usernames);
     }
@@ -211,14 +197,14 @@ public class TournamentScenarios {
     @Then("{int} random pairings are created for the tournament {string}")
     public void countRandomPairings(Integer num, String name) throws IOException {
         var tournament = tournamentByName(name).orElseThrow();
-        LOG.info("Pairings: {}", tournament.pairings());
-        Assertions.assertEquals(num, tournament.pairings().size());
+        LOG.info("Pairings: {}", tournament.currentPairings());
+        Assertions.assertEquals(num, tournament.currentPairings().size());
     }
 
     @Then("any player can no longer sign up for the tournament {string}")
     public void signupFails(String name) throws IOException {
         var tournament = tournamentByName(name).orElseThrow();
-        var player = new Player(UUID.randomUUID().toString());
+        var player = new Participant(UUID.randomUUID().toString());
 
         client.tournamentSignup(tournament, player, response -> {
             logBodyIfPresent(response.body());
@@ -233,6 +219,6 @@ public class TournamentScenarios {
 
         Assertions.assertEquals(
                 new HashSet<>(pairings),
-                new HashSet<>(tournament.pairings()));
+                new HashSet<>(tournament.currentPairings()));
     }
 }
