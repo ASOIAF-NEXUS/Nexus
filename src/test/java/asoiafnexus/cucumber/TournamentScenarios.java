@@ -39,6 +39,15 @@ public class TournamentScenarios {
                 .findAny();
     }
 
+    private UUID usernameToId(String username) {
+        try {
+            client.withToken(client.loginUser(username));
+            return client.userProfile().id();
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Given("a tournament named {string}")
     public void tournamentExistsByName(String name) throws IOException {
         Assertions.assertTrue(tournamentByName(name).isPresent());
@@ -112,10 +121,10 @@ public class TournamentScenarios {
     public void playersSignup(String name, DataTable players) throws IOException {
         var tournament = tournamentByName(name).orElseThrow();
         players.asMaps().forEach(p -> {
-            var username = p.get("username");
-            var player = new Participant(username);
             try {
-                client.withToken(client.loginUser(username));
+                var username = p.get("username");
+                var player = new Participant(usernameToId(username), Collections.emptyList());
+
                 client.tournamentSignup(tournament, player, response -> {
                     logBodyIfPresent(response.body());
                     Assertions.assertTrue(response.isSuccessful());
@@ -130,11 +139,10 @@ public class TournamentScenarios {
     public void playersWithdraw(String name, DataTable players) throws IOException {
         var tournament = tournamentByName(name).orElseThrow();
         players.asMaps().forEach(p -> {
-            var username = p.get("username");
-            var player = new Participant(username);
             try {
+                var username = p.get("username");
                 client.withToken(client.loginUser(username));
-                client.tournamentWithdraw(tournament, player, response -> {
+                client.tournamentWithdraw(tournament, response -> {
                     logBodyIfPresent(response.body());
                     Assertions.assertTrue(response.isSuccessful());
                 });
@@ -156,8 +164,8 @@ public class TournamentScenarios {
     public List<Pairing> toPairings(DataTable input) {
         return input.asMaps().stream()
                 .map(p -> new Pairing(
-                        p.get("p1"),
-                        p.get("p2")))
+                        usernameToId(p.get("p1")),
+                        usernameToId(p.get("p2"))))
                 .toList();
     }
 
@@ -187,9 +195,10 @@ public class TournamentScenarios {
         var tournament = tournamentByName(name).orElseThrow();
         var expected = players.asMaps().stream()
                 .map(x -> x.get("username"))
+                .map(this::usernameToId)
                 .collect(Collectors.toSet());
         var usernames = tournament.participants().stream()
-                .map(Participant::username)
+                .map(Participant::id)
                 .collect(Collectors.toSet());
         Assertions.assertEquals(expected, usernames);
     }
@@ -197,15 +206,23 @@ public class TournamentScenarios {
     @Then("{int} random pairings are created for the tournament {string}")
     public void countRandomPairings(Integer num, String name) throws IOException {
         var tournament = tournamentByName(name).orElseThrow();
-        LOG.info("Pairings: {}", tournament.currentPairings());
-        Assertions.assertEquals(num, tournament.currentPairings().size());
+        LOG.info("Pairings: {}", tournament.state().getCurrentPairings());
+        Assertions.assertEquals(num, tournament.state().getCurrentPairings().size());
     }
 
     @Then("any player can no longer sign up for the tournament {string}")
     public void signupFails(String name) throws IOException {
-        var tournament = tournamentByName(name).orElseThrow();
-        var player = new Participant(UUID.randomUUID().toString());
+        var username = UUID.randomUUID() + "@testing.com";
+        client.signupUser(username, response -> {
+            logBodyIfPresent(response.body());
+            Assertions.assertTrue(response.isSuccessful());
+        });
 
+        client.withToken(client.loginUser(username));
+        var user = client.userProfile();
+        var player = new Participant(user.id(), Collections.emptyList());
+
+        var tournament = tournamentByName(name).orElseThrow();
         client.tournamentSignup(tournament, player, response -> {
             logBodyIfPresent(response.body());
             Assertions.assertFalse(response.isSuccessful());
@@ -214,11 +231,11 @@ public class TournamentScenarios {
 
     @Then("the latest pairings for the tournament {string} are")
     public void pairingsMatch(String name, DataTable input) throws IOException {
-        var pairings = toPairings(input);
         var tournament = tournamentByName(name).orElseThrow();
+        var pairings = toPairings(input);
 
         Assertions.assertEquals(
                 new HashSet<>(pairings),
-                new HashSet<>(tournament.currentPairings()));
+                new HashSet<>(tournament.state().currentPairings()));
     }
 }

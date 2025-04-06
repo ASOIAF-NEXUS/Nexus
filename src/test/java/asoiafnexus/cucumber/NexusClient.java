@@ -5,6 +5,7 @@ import asoiafnexus.tournament.model.Pairing;
 import asoiafnexus.tournament.model.Participant;
 import asoiafnexus.tournament.model.Tournament;
 import asoiafnexus.user.model.Login;
+import asoiafnexus.user.model.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -69,6 +70,18 @@ public class NexusClient {
         }
     }
 
+    public User userProfile() throws IOException {
+        var request = new Request.Builder()
+                .get()
+                .header("Authorization", "Bearer " + this.token)
+                .url(String.format("http://localhost:%d/api/v1/users/me", port))
+                .build();
+
+        try(var response = client.newCall(request).execute()) {
+            return objectMapper.readValue(response.body().byteStream(), new TypeReference<>() {});
+        }
+    }
+
     public void createTournament(Details d, Consumer<Response> responseHandler) throws IOException {
         var request = new Request.Builder()
                 .post(RequestBody.create(
@@ -115,11 +128,9 @@ public class NexusClient {
         }
     }
 
-    public void tournamentWithdraw(Tournament t, Participant p, Consumer<Response> responseHandler) throws IOException {
+    public void tournamentWithdraw(Tournament t, Consumer<Response> responseHandler) throws IOException {
         var request = new Request.Builder()
-                .post(RequestBody.create(
-                        objectMapper.writeValueAsString(p),
-                        MediaType.get("application/json")))
+                .post(RequestBody.create(new byte[0]))
                 .header("Authorization", "Bearer " + this.token)
                 .url(String.format("http://localhost:%d/api/v1/tournaments/%s/withdraw",
                         port,

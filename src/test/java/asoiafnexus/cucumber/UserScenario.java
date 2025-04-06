@@ -17,8 +17,6 @@ public class UserScenario {
 
     NexusClient client = NexusClient.instance;
 
-
-
     @Given("The following users have signed up")
     public void signupUser(DataTable users) {
         users.asMaps().forEach(x -> {

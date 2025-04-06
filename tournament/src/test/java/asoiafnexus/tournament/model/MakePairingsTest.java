@@ -12,7 +12,27 @@ public class MakePairingsTest {
     @Nested
     public class SortedPairings {
 
-        private Set<Set<String>> pairingsByName(List<Pairing> pairings) {
+        final UUID p1 = UUID.randomUUID();
+        final UUID p2 = UUID.randomUUID();
+        final UUID p3 = UUID.randomUUID();
+        final UUID p4 = UUID.randomUUID();
+        final UUID p5 = UUID.randomUUID();
+        final UUID p6 = UUID.randomUUID();
+        final UUID p7 = UUID.randomUUID();
+        final UUID p8 = UUID.randomUUID();
+
+        List<Participant> players = List.of(
+                new Participant(p1, Collections.emptyList()),
+                new Participant(p2, Collections.emptyList()),
+                new Participant(p3, Collections.emptyList()),
+                new Participant(p4, Collections.emptyList()),
+                new Participant(p5, Collections.emptyList()),
+                new Participant(p6, Collections.emptyList()),
+                new Participant(p7, Collections.emptyList()),
+                new Participant(p8, Collections.emptyList())
+        );
+
+        private Set<Set<UUID>> pairingsByName(List<Pairing> pairings) {
             return pairings.stream()
                     .map(x -> {
                         if(x.bye()) {
@@ -26,192 +46,128 @@ public class MakePairingsTest {
 
         @Test
         public void noFirstRound() {
-            var players = List.of(
-                    new Participant("p1", List.of(), Collections.emptyList()),
-                    new Participant("p2", List.of(), Collections.emptyList()),
-                    new Participant("p3", List.of(), Collections.emptyList()),
-                    new Participant("p4", List.of(), Collections.emptyList()),
-                    new Participant("p5", List.of(), Collections.emptyList()),
-                    new Participant("p6", List.of(), Collections.emptyList()),
-                    new Participant("p7", List.of(), Collections.emptyList()),
-                    new Participant("p8", List.of(), Collections.emptyList())
-            );
-            var pairings = MakePairings.SortedPairings.makePairings(players);
+            var pairings = MakePairings.SortedPairings.makePairings(players, Collections.emptyList());
 
             Assertions.assertEquals(
-                    Set.of(Set.of("p1", "p2"),
-                            Set.of("p3", "p4"),
-                            Set.of("p5", "p6"),
-                            Set.of("p7", "p8")),
+                    Set.of(Set.of(p1, p2),
+                            Set.of(p3, p4),
+                            Set.of(p5, p6),
+                            Set.of(p7, p8)),
                     pairingsByName(pairings));
         }
 
         @Test
         public void secondRound() {
-            var players = List.of(
-                    new Participant("p1", List.of(new Participant.Result(0, "p2", List.of(3, 4, 15))), Collections.emptyList()),
-                    new Participant("p2", List.of(new Participant.Result(0, "p1", List.of(1, 0, 15))), Collections.emptyList()),
-                    new Participant("p3", List.of(new Participant.Result(0, "p4", List.of(1, 0, 15))), Collections.emptyList()),
-                    new Participant("p4", List.of(new Participant.Result(0, "p3", List.of(3, 4, 15))), Collections.emptyList()),
-                    new Participant("p5", List.of(new Participant.Result(0, "p6", List.of(2, 2, 15))), Collections.emptyList()),
-                    new Participant("p6", List.of(new Participant.Result(0, "p5", List.of(2, 2, 15))), Collections.emptyList()),
-                    new Participant("p7", List.of(new Participant.Result(0, "p8", List.of(3, 4, 15))), Collections.emptyList()),
-                    new Participant("p8", List.of(new Participant.Result(0, "p7", List.of(0, 0, 15))), Collections.emptyList())
+            var results = List.of(
+                    new Result(p1, p2, 1, List.of(3, 4, 15)),
+                    new Result(p2, p1, 1, List.of(1, 0, 15)),
+                    new Result(p3, p4, 1, List.of(1, 0, 15)),
+                    new Result(p4, p3, 1, List.of(3, 4, 15)),
+                    new Result(p5, p6, 1, List.of(2, 2, 15)),
+                    new Result(p6, p5, 1, List.of(2, 2, 15)),
+                    new Result(p7, p8, 1, List.of(3, 4, 15)),
+                    new Result(p8, p7, 1, List.of(0, 0, 15))
             );
-            var pairings = MakePairings.SortedPairings.makePairings(players);
+            var pairings = MakePairings.SortedPairings.makePairings(players, results);
 
             Assertions.assertEquals(
                     Set.of(
-                            Set.of("p1", "p4"),
-                            Set.of("p7", "p5"),
-                            Set.of("p6", "p2"),
-                            Set.of("p3", "p8")
+                            Set.of(p1, p4),
+                            Set.of(p7, p5),
+                            Set.of(p6, p2),
+                            Set.of(p3, p8)
                     ),
                     pairingsByName(pairings));
         }
 
         @Test
         public void thirdRound() {
-            var players = List.of(
-                    new Participant("p1", List.of(
-                            new Participant.Result(0, "p2", List.of(3, 4, 15)),
-                            new Participant.Result(1, "p4", List.of(3, 4, 15))
-                    ), Collections.emptyList()),
-                    new Participant("p2", List.of(
-                            new Participant.Result(0, "p1", List.of(1, 0, 15)),
-                            new Participant.Result(1, "p6", List.of(1, 0, 15))
-                    ), Collections.emptyList()),
-                    new Participant("p3", List.of(
-                            new Participant.Result(0, "p4", List.of(1, 0, 15)),
-                            new Participant.Result(1, "p8", List.of(3, 4, 20))
-                    ), Collections.emptyList()),
-                    new Participant("p4", List.of(
-                            new Participant.Result(0, "p3", List.of(3, 4, 15)),
-                            new Participant.Result(1, "p1", List.of(1, 0, 0))
-                    ), Collections.emptyList()),
-                    new Participant("p5", List.of(
-                            new Participant.Result(0, "p6", List.of(2, 2, 15)),
-                            new Participant.Result(1, "p7", List.of(3, 3, 15))
-                    ), Collections.emptyList()),
-                    new Participant("p6", List.of(
-                            new Participant.Result(0, "p5", List.of(2, 2, 15)),
-                            new Participant.Result(1, "p2", List.of(3, 4, 15))
-                    ), Collections.emptyList()),
-                    new Participant("p7", List.of(
-                            new Participant.Result(0, "p8", List.of(3, 4, 15)),
-                            new Participant.Result(1, "p5", List.of(1, 0, 15))
-                    ), Collections.emptyList()),
-                    new Participant("p8", List.of(
-                            new Participant.Result(0, "p7", List.of(0, 0, 15)),
-                            new Participant.Result(1, "p3", List.of(0, 0, 0))
-                    ), Collections.emptyList())
+            var results = List.of(
+                    new Result(p1, p2, 1, List.of(3, 4, 15)),
+                    new Result(p1, p4, 2, List.of(3, 4, 15)),
+                    new Result(p2, p1, 1, List.of(1, 0, 15)),
+                    new Result(p2, p6, 2, List.of(1, 0, 15)),
+                    new Result(p3, p4, 1, List.of(1, 0, 15)),
+                    new Result(p3, p8, 2, List.of(3, 4, 20)),
+                    new Result(p4, p3, 1, List.of(3, 4, 15)),
+                    new Result(p4, p1, 2, List.of(1, 0, 0)),
+                    new Result(p5, p6, 1, List.of(2, 2, 15)),
+                    new Result(p5, p7, 2, List.of(3, 3, 15)),
+                    new Result(p6, p5, 1, List.of(2, 2, 15)),
+                    new Result(p6, p2, 2, List.of(3, 4, 15)),
+                    new Result(p7, p8, 1, List.of(3, 4, 15)),
+                    new Result(p7, p5, 2, List.of(1, 0, 15)),
+                    new Result(p8, p7, 1, List.of(0, 0, 15)),
+                    new Result(p8, p3, 2, List.of(0, 0, 0))
             );
-            var pairings = MakePairings.SortedPairings.makePairings(players);
+            var pairings = MakePairings.SortedPairings.makePairings(players, results);
 
             Assertions.assertEquals(
                     Set.of(
-                            Set.of("p1", "p6"),
-                            Set.of("p5", "p3"),
-                            Set.of("p7", "p4"),
-                            Set.of("p2", "p8")
+                            Set.of(p1, p6),
+                            Set.of(p5, p3),
+                            Set.of(p7, p4),
+                            Set.of(p2, p8)
                     ),
                     pairingsByName(pairings));
         }
 
         @Test
         public void playersCannotPlayTheSameOpponentTwice() {
-            var players = List.of(
-                    new Participant("p1", List.of(
-                            new Participant.Result(0, "p2", List.of(3, 4, 15)),
-                            new Participant.Result(1, "p4", List.of(3, 4, 15))
-                    ), Collections.emptyList()),
-                    new Participant("p2", List.of(
-                            new Participant.Result(0, "p1", List.of(1, 0, 15)),
-                            new Participant.Result(1, "p3", List.of(3, 4, 15))
-                    ), Collections.emptyList()),
-                    new Participant("p3", List.of(
-                            new Participant.Result(0, "p4", List.of(1, 0, 15)),
-                            new Participant.Result(1, "p4", List.of(1, 0, 15))
-                    ), Collections.emptyList()),
-                    new Participant("p4", List.of(
-                            new Participant.Result(0, "p3", List.of(3, 4, 15)),
-                            new Participant.Result(1, "p1", List.of(1, 0, 15))
-                    ), Collections.emptyList())
+            var results = List.of(
+                    new Result(p1, p2, 1, List.of(3, 4, 15)),
+                    new Result(p1, p4, 2, List.of(3, 4, 15)),
+                    new Result(p2, p1, 1, List.of(1, 0, 15)),
+                    new Result(p2, p3, 2, List.of(3, 4, 15)),
+                    new Result(p3, p4, 1, List.of(1, 0, 15)),
+                    new Result(p3, p4, 2, List.of(1, 0, 15)),
+                    new Result(p4, p3, 1, List.of(3, 4, 15)),
+                    new Result(p4, p1, 2, List.of(1, 0, 15))
             );
-            var pairings = MakePairings.SortedPairings.makePairings(players);
+            var pairings = MakePairings.SortedPairings.makePairings(players, results);
 
             Assertions.assertEquals(
                     Set.of(
-                            Set.of("p1", "p3"),
-                            Set.of("p2", "p4")
+                            Set.of(p1, p3),
+                            Set.of(p2, p4)
                     ),
                     pairingsByName(pairings));
         }
 
         @Test
         public void weDecidedToGoOneMoreRound() {
-            var players = List.of(
-                    new Participant("p1", List.of(
-                            new Participant.Result(0, "p2", List.of(3, 4, 15)),
-                            new Participant.Result(0, "p4", List.of(3, 4, 15)),
-                            new Participant.Result(0, "p3", List.of(3, 4, 15))
-                    ), Collections.emptyList()),
-                    new Participant("p2", List.of(
-                            new Participant.Result(0, "p1", List.of(1, 0, 15)),
-                            new Participant.Result(0, "p3", List.of(3, 4, 15)),
-                            new Participant.Result(0, "p4", List.of(2, 2, 15))
-                    ), Collections.emptyList()),
-                    new Participant("p3", List.of(
-                            new Participant.Result(0, "p4", List.of(1, 0, 15)),
-                            new Participant.Result(0, "p4", List.of(1, 0, 15)),
-                            new Participant.Result(0, "p1", List.of(1, 0, 15))
-                    ), Collections.emptyList()),
-                    new Participant("p4", List.of(
-                            new Participant.Result(0, "p3", List.of(3, 4, 15)),
-                            new Participant.Result(0, "p1", List.of(1, 0, 15)),
-                            new Participant.Result(0, "p2", List.of(2, 2, 15))
-                    ), Collections.emptyList())
+            var results = List.of(
+                    new Result(p1, p2, 1, List.of(3, 4, 15)),
+                    new Result(p1, p4, 2, List.of(3, 4, 15)),
+                    new Result(p1, p3, 3, List.of(3, 4, 15)),
+                    new Result(p2, p1, 1, List.of(1, 0, 15)),
+                    new Result(p2, p3, 2, List.of(3, 4, 15)),
+                    new Result(p2, p4, 3, List.of(2, 2, 15)),
+                    new Result(p3, p4, 1, List.of(1, 0, 15)),
+                    new Result(p3, p4, 2, List.of(1, 0, 15)),
+                    new Result(p3, p1, 3, List.of(1, 0, 15)),
+                    new Result(p4, p3, 1, List.of(3, 4, 15)),
+                    new Result(p4, p1, 2, List.of(1, 0, 15)),
+                    new Result(p4, p2, 3, List.of(2, 2, 15))
             );
-            var pairings = MakePairings.SortedPairings.makePairings(players);
+            var pairings = MakePairings.SortedPairings.makePairings(players, results);
 
             Assertions.assertEquals(
                     Set.of(
-                            Set.of("p1", "p2"),
-                            Set.of("p3", "p4")
+                            Set.of(p1, p2),
+                            Set.of(p3, p4)
                     ),
                     pairingsByName(pairings));
         }
 
         @Test
         public void byes() {
-            var players = List.of(
-                    new Participant("p1", List.of(), Collections.emptyList()),
-                    new Participant("p2", List.of(), Collections.emptyList()),
-                    new Participant("p3", List.of(), Collections.emptyList())
-            );
-            var pairings = MakePairings.SortedPairings.makePairings(players);
+            var pairings = MakePairings.SortedPairings.makePairings(players.subList(0, 3), Collections.emptyList());
 
             Assertions.assertEquals(
                     Set.of(
-                            Set.of("p1", "p2"),
-                            Set.of("p3")
-                    ),
-                    pairingsByName(pairings));
-        }
-
-        @Test
-        public void byesCannotRepeat() {
-            var players = List.of(
-                    new Participant("p1", List.of(), Collections.emptyList()),
-                    new Participant("p2", List.of(), Collections.emptyList()),
-                    new Participant("p3", List.of(), Collections.emptyList())
-            );
-            var pairings = MakePairings.SortedPairings.makePairings(players);
-
-            Assertions.assertEquals(
-                    Set.of(
-                            Set.of("p1", "p2"),
-                            Set.of("p3")
+                            Set.of(p1, p2),
+                            Set.of(p3)
                     ),
                     pairingsByName(pairings));
         }

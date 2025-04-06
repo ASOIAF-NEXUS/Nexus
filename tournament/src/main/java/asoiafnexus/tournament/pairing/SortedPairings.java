@@ -3,11 +3,9 @@ package asoiafnexus.tournament.pairing;
 import asoiafnexus.tournament.model.MakePairings;
 import asoiafnexus.tournament.model.Pairing;
 import asoiafnexus.tournament.model.Participant;
+import asoiafnexus.tournament.model.Result;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -23,10 +21,10 @@ public class SortedPairings implements MakePairings {
     }
 
     @Override
-    public List<Pairing> makePairings(List<Participant> participants) {
+    public List<Pairing> makePairings(List<Participant> participants, List<Result> results) {
         // Sort players from top to bottom score
         var availablePlayers = participants.stream().sorted(Comparator.comparing(
-                        Participant::points,
+                        p -> p.calculateTournamentPoints(results),
                         this::comparePoints))
                 .collect(Collectors.toList());
 
@@ -39,7 +37,7 @@ public class SortedPairings implements MakePairings {
             // P1 may have already played P2, pair them with the next-highest ranked player in the event
             for(var jtor = availablePlayers.iterator(); jtor.hasNext() && p2 == null; ) {
                 var candidate = jtor.next();
-                if(!p1.opponents().contains(candidate.username())) {
+                if(!p1.opponents(results).contains(candidate.id())) {
                     p2 = candidate;
                     jtor.remove(); // remove P2 from the pool of available players
                 }
@@ -51,8 +49,8 @@ public class SortedPairings implements MakePairings {
             }
 
             newPairings.add(new Pairing(
-                    p1.username(),
-                    Optional.ofNullable(p2).map(Participant::username).orElse(null)));
+                    p1.id(),
+                    Optional.ofNullable(p2).map(Participant::id).orElse(null)));
         }
         return newPairings.stream().toList();
     }

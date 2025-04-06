@@ -1,13 +1,9 @@
 package asoiafnexus.user.model;
 
-import java.util.List;
+import java.util.UUID;
 
 public record User(
-    String username,
-    double rating,
-    List<String> matchHistory,
-    int totalMatches,
-    int winMatches,
-    int loseMatches
+        UUID id,
+        String username
 ) {
 }

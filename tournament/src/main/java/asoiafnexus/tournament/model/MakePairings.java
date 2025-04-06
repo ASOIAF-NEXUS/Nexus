@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 public interface MakePairings {
-    List<Pairing> makePairings(List<Participant> participants);
+    List<Pairing> makePairings(List<Participant> participants, List<Result> results);
 
     MakePairings RandomPairings = new RandomPairings();
     MakePairings SortedPairings = new SortedPairings();
