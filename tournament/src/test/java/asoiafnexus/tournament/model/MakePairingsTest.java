@@ -172,4 +172,16 @@ public class MakePairingsTest {
                     pairingsByName(pairings));
         }
     }
+
+    @Nested
+    class PairingTests {
+        @Test
+        public void comparingPairings() {
+            UUID p1 = UUID.randomUUID();
+            UUID p2 = UUID.randomUUID();
+
+            Assertions.assertEquals(new Pairing(p1, p2), new Pairing(UUID.fromString(p1.toString()), UUID.fromString(p2.toString())));
+            Assertions.assertEquals(new Pairing(p1, p2), new Pairing(p2, p1));
+        }
+    }
 }

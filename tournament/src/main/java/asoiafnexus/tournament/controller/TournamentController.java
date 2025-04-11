@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,7 +21,7 @@ public class TournamentController {
 
     private static final Logger LOG = LoggerFactory.getLogger(TournamentController.class);
 
-    HashMap<UUID, Tournament> db = new HashMap<>();
+    ConcurrentHashMap<UUID, Tournament> db = new ConcurrentHashMap<>();
 
     @Autowired
     private UserRepository users;
@@ -41,7 +42,7 @@ public class TournamentController {
                 id,
                 details,
                 Collections.emptyList(),
-                null,
+                MakePairings.SortedPairings,
                 null);
         db.put(id, newTournament);
         return newTournament;
@@ -167,5 +168,33 @@ public class TournamentController {
         return ResponseEntity.ok()
                 .body(db.computeIfPresent(id, (i, t) ->
                         t.updateState(s -> s.setPairings(pairings))));
+    }
+
+    @PostMapping("/{id}/pairings/result")
+    public ResponseEntity<?> submitResult(Authentication auth, @PathVariable UUID id, @RequestBody Result result) {
+        var user = users.byUsername(auth.getName());
+        if (!Objects.equals(user.id(), result.participant())) {
+            return ResponseEntity.status(403).build();
+        }
+        var incomingPlayers = Set.of(result.participant(), result.opponent());
+        var registeredPlayers = db.get(id).participants().stream().map(Participant::id).collect(Collectors.toSet());
+
+        if (!registeredPlayers.containsAll(incomingPlayers)) {
+            LOG.error("Registered {} incoming {}", registeredPlayers, incomingPlayers);
+            return ResponseEntity
+                    .badRequest()
+                    .body("One of the participants in the result do not belong to this tournament");
+        }
+
+        return ResponseEntity.ok()
+                .body(db.computeIfPresent(id, (i, t) ->
+                        t.updateState(s -> s.submit(result))));
+    }
+
+    @PostMapping("/{id}/next-round")
+    public ResponseEntity<?> submitResult(@PathVariable UUID id) {
+        return ResponseEntity.ok()
+                .body(db.computeIfPresent(id, (i, t) ->
+                        t.updateState(s -> s.nextRound(t.participants(), t.pairingsStrategy()))));
     }
 }

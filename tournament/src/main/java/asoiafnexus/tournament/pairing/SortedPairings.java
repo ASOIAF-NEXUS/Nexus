@@ -4,12 +4,18 @@ import asoiafnexus.tournament.model.MakePairings;
 import asoiafnexus.tournament.model.Pairing;
 import asoiafnexus.tournament.model.Participant;
 import asoiafnexus.tournament.model.Result;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SortedPairings implements MakePairings {
+
+    @Override
+    public String name() {
+        return "Sorted Pairings";
+    }
 
     public int comparePoints(List<Integer> p1, List<Integer> p2) {
         return IntStream
