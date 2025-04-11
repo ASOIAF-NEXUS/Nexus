@@ -1,27 +1,35 @@
 package asoiafnexus.tournament.model;
 
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Stream;
+import java.util.*;
+import java.util.function.Function;
 
 public record Tournament(
         UUID id,
-        String name,
-        String description,
-        String location,
-        ZonedDateTime datetime,
-        List<Player> players,
-        List<Pairing> pairings
+        Details details,
+        List<Participant> participants,
+        MakePairings pairingsStrategy,
+        State state
 ) {
     public boolean started() {
-        return !pairings.isEmpty();
+        return state != null;
     }
 
-    public List<Pairing> newPairings(MakePairings strategy) {
-        return Stream.concat(
-                pairings.stream(),
-                strategy.makePairings(players, pairings).stream()
-        ).toList();
+    public Tournament start() {
+        return new Tournament(
+                id,
+                details,
+                participants,
+                pairingsStrategy,
+                new State(MakePairings.RandomPairings.makePairings(participants, Collections.emptyList())));
+    }
+
+    public Tournament updateState(Function<State, State> updater) {
+        return new Tournament(
+                id,
+                details,
+                participants,
+                pairingsStrategy,
+                updater.apply(state)
+        );
     }
 }

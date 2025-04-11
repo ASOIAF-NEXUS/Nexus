@@ -1,10 +1,11 @@
 package asoiafnexus.cucumber;
 
+import asoiafnexus.tournament.model.Details;
 import asoiafnexus.tournament.model.Pairing;
-import asoiafnexus.tournament.model.Player;
+import asoiafnexus.tournament.model.Participant;
 import asoiafnexus.tournament.model.Tournament;
 import asoiafnexus.user.model.Login;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import asoiafnexus.user.model.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class NexusClient {
@@ -68,10 +70,22 @@ public class NexusClient {
         }
     }
 
-    public void createTournament(Tournament t, Consumer<Response> responseHandler) throws IOException {
+    public User userProfile() throws IOException {
+        var request = new Request.Builder()
+                .get()
+                .header("Authorization", "Bearer " + this.token)
+                .url(String.format("http://localhost:%d/api/v1/users/me", port))
+                .build();
+
+        try(var response = client.newCall(request).execute()) {
+            return objectMapper.readValue(response.body().byteStream(), new TypeReference<>() {});
+        }
+    }
+
+    public void createTournament(Details d, Consumer<Response> responseHandler) throws IOException {
         var request = new Request.Builder()
                 .post(RequestBody.create(
-                        objectMapper.writeValueAsString(t),
+                        objectMapper.writeValueAsString(d),
                         MediaType.get("application/json")))
                 .header("Authorization", "Bearer " + this.token)
                 .url(String.format("http://localhost:%d/api/v1/tournaments", port))
@@ -82,15 +96,15 @@ public class NexusClient {
         }
     }
 
-    public void updateTournament(Tournament t, Consumer<Response> responseHandler) throws IOException {
+    public void updateTournament(UUID id, Details d, Consumer<Response> responseHandler) throws IOException {
         var request = new Request.Builder()
                 .put(RequestBody.create(
-                        objectMapper.writeValueAsString(t),
+                        objectMapper.writeValueAsString(d),
                         MediaType.get("application/json")))
                 .header("Authorization", "Bearer " + this.token)
                 .url(String.format("http://localhost:%d/api/v1/tournaments/%s",
                         port,
-                        t.id()))
+                        id))
                 .build();
 
         try(var response = client.newCall(request).execute()) {
@@ -98,7 +112,7 @@ public class NexusClient {
         }
     }
 
-    public void tournamentSignup(Tournament t, Player p, Consumer<Response> responseHandler) throws IOException {
+    public void tournamentSignup(Tournament t, Participant p, Consumer<Response> responseHandler) throws IOException {
         var request = new Request.Builder()
                 .post(RequestBody.create(
                         objectMapper.writeValueAsString(p),
@@ -114,11 +128,9 @@ public class NexusClient {
         }
     }
 
-    public void tournamentWithdraw(Tournament t, Player p, Consumer<Response> responseHandler) throws IOException {
+    public void tournamentWithdraw(Tournament t, Consumer<Response> responseHandler) throws IOException {
         var request = new Request.Builder()
-                .post(RequestBody.create(
-                        objectMapper.writeValueAsString(p),
-                        MediaType.get("application/json")))
+                .post(RequestBody.create(new byte[0]))
                 .header("Authorization", "Bearer " + this.token)
                 .url(String.format("http://localhost:%d/api/v1/tournaments/%s/withdraw",
                         port,
@@ -160,6 +172,7 @@ public class NexusClient {
                 .build();
 
         try(var response = client.newCall(request).execute()) {
+            LOG.info("Response {}", response);
             responseHandler.accept(response);
         }
     }

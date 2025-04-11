@@ -1,27 +1,22 @@
 package asoiafnexus.tournament.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import asoiafnexus.tournament.pairing.MakePairingsSerDe;
+import asoiafnexus.tournament.pairing.RandomPairings;
+import asoiafnexus.tournament.pairing.SortedPairings;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.util.*;
+import java.util.stream.IntStream;
+
+@JsonSerialize(using = MakePairingsSerDe.Serializer.class)
+@JsonDeserialize(using = MakePairingsSerDe.Deserializer.class)
 public interface MakePairings {
-    List<Pairing> makePairings(List<Player> players, List<Pairing> previousPairings);
+    String name();
+    List<Pairing> makePairings(List<Participant> participants, List<Result> results);
 
-    /**
-     * Creates a new set of pairings by randomizing the players and grouping
-     * two at a time. Does not take pairing history into consideration.
-     */
-    MakePairings RandomPairings = (p, x) -> {
-        var players = new ArrayList<>(p);
-        Collections.shuffle(players);
-        var newPairings = new ArrayList<Pairing>();
+    MakePairings RandomPairings = new RandomPairings();
+    MakePairings SortedPairings = new SortedPairings();
 
-        for(var itor = players.iterator(); itor.hasNext();) {
-            Player p1 = itor.next();
-            Player p2 = null;
-            if(itor.hasNext()) p2 = itor.next();
-            newPairings.add(new Pairing(p1, p2));
-        }
-        return newPairings.stream().toList();
-    };
+    List<MakePairings> allStrategies = List.of(RandomPairings, SortedPairings);
 }

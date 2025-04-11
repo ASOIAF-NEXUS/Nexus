@@ -1,6 +1,10 @@
 package asoiafnexus.user.controller;
 
 import asoiafnexus.user.model.Login;
+import asoiafnexus.user.model.User;
+import asoiafnexus.user.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,12 +17,14 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     UserDetailsService users;
@@ -26,11 +32,14 @@ public class UserController {
     @Autowired
     JwtEncoder encoder;
 
+    @Autowired
+    UserRepository db;
+
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody Login login) {
         var mgr = ((InMemoryUserDetailsManager) users);
 
-        if(mgr.userExists(login.username())) {
+        if (mgr.userExists(login.username())) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -39,6 +48,9 @@ public class UserController {
                         .withUsername(login.username())
                         .password(login.password())
                         .build());
+
+        db.insert(new User(UUID.randomUUID(), login.username()));
+
         return ResponseEntity.ok().build();
     }
 
@@ -46,11 +58,11 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody Login login) {
         var mgr = ((InMemoryUserDetailsManager) users);
 
-        if(!mgr.userExists(login.username())) {
+        if (!mgr.userExists(login.username())) {
             return ResponseEntity.badRequest().build();
         }
         var auth = mgr.loadUserByUsername(login.username());
-        if(!Objects.equals(login.password(), auth.getPassword())) {
+        if (!Objects.equals(login.password(), auth.getPassword())) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -60,7 +72,6 @@ public class UserController {
         String scope = auth.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
-
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
@@ -72,5 +83,12 @@ public class UserController {
 
         return ResponseEntity.ok()
                 .body(this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue());
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> loggedInProfile(Authentication auth) {
+        return Optional.ofNullable(db.byUsername(auth.getName()))
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(500).build());
     }
 }
